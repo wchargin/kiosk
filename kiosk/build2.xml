@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project MUN Kiosk III with Jar-in-Jar Loader">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="C:/Users/William/Dropbox/EclipseJava/MUN Kiosk III/kiosk-3.0.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="org.lcmmun.kiosk.gui.Kiosk"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ miglayout-4.0-swing.jar analysis-core.jar cobra-gp-0.98.5.jar js.jar icepdf-core.jar"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="C:/Users/William/Dropbox/EclipseJava/MUN Kiosk III/bin"/>
+            <zipfileset dir="C:\Users\William\Dropbox\EclipseJava\MigLayout" includes="miglayout-4.0-swing.jar"/>
+            <zipfileset dir="C:\Users\William\Dropbox\EclipseJava\Kiosk Speech Analysis" includes="analysis-core.jar"/>
+            <zipfileset dir="C:\Users\William\Dropbox\EclipseJava\cobra-0.98.4\lib" includes="cobra-gp-0.98.5.jar"/>
+            <zipfileset dir="C:\Users\William\Dropbox\EclipseJava\cobra-0.98.4\lib" includes="js.jar"/>
+            <fileset dir="C:/Users/William/Dropbox/EclipseJava/Customizable2/bin"/>
+            <zipfileset dir="C:\Users\William\Dropbox\EclipseJava\IcePDF" includes="icepdf-core.jar"/>
+            <fileset dir="C:/Users/William/Dropbox/EclipseJava/Kiosk Broadcast Receiver/bin"/>
+            <fileset dir="C:/Users/William/Dropbox/EclipseJava/LAFOptimizer/bin"/>
+        </jar>
+    </target>
+</project>

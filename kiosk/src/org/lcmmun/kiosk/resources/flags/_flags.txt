@@ -1,0 +1,239 @@
+Afghanistan.png|Islamic Republic of Afghanistan
+Albania.png|Republic of Albania
+Algeria.png|People's Democratic Republic of Algeria
+AmericanSamoa.png
+Andorra.png|Principality of Andorra|Principality of the Valleys of Andorra
+Angola.png|Republic of Angola
+Anguilla.png
+AntiguaAndBarbuda.png|Antigua|Barbuda|AntiguaBarbuda
+Argentina.png|Argentine Republic|Republic of Argentina
+Armenia.png|Republic of Armenia
+Aruba.png
+Australia.png|Commonwealth of Australia
+Austria.png|Republic of Austria
+Azerbaijan.png|Republic of Azerbaijan
+Bahamas.png|Commonwealth of the Bahamas
+Bahrain.png|Kingdom of Bahrain
+Bangladesh.png|People's Republic of Bangladesh
+Barbados.png
+Belarus.png|Republic of Belarus|Byelorussian SSR|Byelorussian Soviet Socialist Republic
+Belgium.png|Kingdom of Belgium
+Belize.png|British Honduras
+Benin.png|Dahomey|Republic of Benin
+Bermuda.png|Bermudas or Somers Isles
+Bhutan.png|Kingdom of Bhutan
+Bolivia.png|Plurinational State of Bolivia
+BosniaAndHerzegovina.png|Bosnia|Herzegovina|Bosnia-Herzegovina
+Botswana.png|Republic of Botswana
+BouvetIsland.png|Bouvetoya
+Brazil.png|Republic of Brazil|Federative Republic of Brazil
+BritishIndianOceanTerritory.png|Chagos Islands|BIOT
+BritishVirginIslands.png|BVI
+Brunei.png|Nation of Brunei|Nation of Brunei, the Abode of Peace
+Bulgaria.png|Republic of Bulgaria
+BurkinaFaso.png|Burkina|Republic of Upper Volta|Upper Volta
+Burma.png|Myanmar|Republic of the Union of Myanmar|Union of Burma
+Burundi.png|Republic of Burundi
+Cambodia.png|Kampuchea|Kingdom of Cambodia
+Cameroon.png|Republic of Cameroon
+Canada.png
+CapeVerde.png|Republic of Cape Verde
+CaymanIslands.png
+CentralAfricanRepublic.png|CAR
+Chad.png|Republic of Chad
+Chile.png|Republic of Chile
+China.png|People's Republic of China|PRC
+ChristmasIslands.png|Territory of Christmas Island
+CocosKeelingIslands.png|Cocos-Keeling|Territory of the Cocos (Keeling) Islands|Cocos Islands|Keeling Islands
+Colombia.png|Republic of Colombia
+Comoros.png|Union of the Comoros
+CookIslands.png
+CostaRica.png
+CoteD'Ivoire.png|Ivory Coast|Republic of Cote d'Ivoire|Republic of Ivory Coast
+Croatia.png|Republic of Croatia
+Cuba.png|Republic of Cuba
+Cyprus.png|Republic of Cyprus
+CzechRepublic.png
+Denmark.png|Kingdom of Denmark
+Djibouti.png|Republic of Djibouti
+Dominica.png|Commonwealth of Dominica
+DominicanRepublic.png|Republica Dominicana
+DRCongo.png|Democratic Republic of the Congo|Congo-Kinshasa|DRC
+Ecuador.png|Republic of Ecuador
+Egypt.png|Arab Republic of Egypt
+ElSalvador.png
+England.png
+EquatorialGuinea.png|Republic of Equatorial Guinea
+Eritrea.png|State of Eritrea
+Estonia.png|Republic of Estonia
+Ethiopia.png|Federal Democratic Republic of Ethiopia
+EuropeanUnion.png|EU
+FalklandIslands.png|Malvinas|Falklands
+FaroeIslands.png
+Fiji.png|Republic of Fiji
+Finland.png|Republic of Finland
+France.png|French Republic|Republique francaise
+FrenchPolynesia.png|Polynesie francaise
+Gabon.png|Gabonese Republic
+Georgia.png|Democratic Republic of Georgia|Georgian Soviet Socialist Republic|Georgian SSR
+Germany.png|Federal Republic of Germany
+Ghana.png|Republic of Ghana
+Gibraltar.png
+Greece.png|Hellenic Republic
+Greenland.png
+Grenada.png
+Guam.png
+Guatemala.png|Republic of Guatemala
+Guernsey.png|Balliwick of Guernsey
+Guinea.png|Republic of Guinea|Guinea-Conakry
+GuineaBissau.png|Republic of Guinnea-Bissau
+Guyana.png|Co-operative Republic of Guyana
+Haiti.png|Republic of Haiti
+VaticanCity.png|Holy See|The Vatican|Vatican City State|Stato della Citta del Vaticano
+Honduras.png|Spanish Honduras
+HongKong.png|Hong Kong Special Administrative Region of the People's Republic of China|Hong Kong SAR of the PRC
+Hungary.png
+Iceland.png
+India.png|Republic of India
+Indonesia.png|Republic of Indonesia
+Iran.png|Islamic Republic of Iran
+Iraq.png|Republic of Iraq
+Ireland.png|Republic of Ireland
+IsleOfMan.png|Mann
+Israel.png|State of Israel
+Italy.png|Italian Republic
+Jamaica.png|Commonwealth of Jamaica
+Japan.png|Nihon|Nippon|Nippon-koku|Nihon-koku|State of Japan
+Jordan.png|Hashemite Kingdom of Jordan
+Kazakhstan.png|Republic of Kazakhstan
+Kenya.png|Republic of Kenya
+Kiribati.png|Republic of Kiribati
+Kosovo.png
+Kurdistan.png|Curdistan|Corduene
+Kuwait.png|State of Kuwait
+Kyrgyzstan.png|Kyrgyz Republic 
+Laos.png|Lao People's Democratic Republic
+Latvia.png|Republic of Latvia
+Lebanon.png|Lebanese Republic
+Lesotho.png|Kingdom of Lesotho
+Liberia.png|Republic of Liberia
+Libya.png
+Liechtenstein.png|Principality of Liechtenstein
+Lithuania.png|Republic of Lithuania
+Luxembourg.png|Grand Duchy of Luxembourg
+Macau.png|Macao
+Macedonia.png|Republic of Macedonia
+Madagascar.png|Republic of Madagascar|Malagasy Republic
+Malawi.png|Republic of Malawi
+Malaysia.png
+Maldives.png|Republic of Maldives|Maldive Islands
+Mali.png|Republic of Mali
+Malta.png|Republic of Malta
+MarshallIslands.png|Republic of the Marshall Islands
+Mauritania.png|Islamic Republic of Mauritania
+Mauritius.png|Republic of Mauritius
+Mayotte.png
+Mexico.png|United Mexican States|United States of Mexico
+Micronesia.png|Federated States of Micronesia
+Moldova.png|Republic of Moldova
+Monaco.png|Principality of Monaco
+Mongolia.png
+Montenegro.png
+Montserrat.png
+Morocco.png|Kingdom of Morocco
+Mozambique.png|Republic of Mozambique
+Namibia.png|Republic of Namibia
+Nauru.png|Republic of Nauru
+Nepal.png|Federal Democratic Republic of Nepal
+Netherlands.png|Kingdom of the Netherlands
+NetherlandsAntilles.png|Dutch Antilles
+NewZealand.png
+Nicaragua.png|Republic of Nicaragua
+Niger.png|Republic of Niger
+Nigeria.png|Federal Republic of Nigeria
+Niue.png
+NorfolkIsland.png
+NorthernMarianaIslands.png
+NorthKorea.png|DPRK|Democratic People's Republic of Korea
+Norway.png|Kingdom of Norway
+Oman.png|Sultanate of Oman
+Pakistan.png|Islamic Republic of Pakistan
+Palau.png|Republic of Palau
+Palestine.png
+Panama.png|Republic of Panama
+PapuaNewGuinea.png|Independent State of Papua New Guinea
+Paraguay.png|Republic of Paraguay
+Peru.png|Republic of Peru
+Philippines.png|Republic of the Philippines
+PitcairnIslands.png
+Poland.png|Republic of Poland
+Portugal.png|Portuguese Republic
+PuertoRico.png
+Qatar.png|State of Qatar|Quatar
+RepublicOfTheCongo.png|Congo-Brazzaville
+Romania.png
+Russia.png|Russian Federation|RF
+Rwanda.png|Republic of Rwanda
+SaintHelena.png|St. Helena
+SaintKittsandNevis.png|Federation of Saint Kitts and Nevis|St. Kitts and Nevis
+SaintLucia.png|Santa Lucia
+SaintPierreAndMiquelon.png|St. Pierre and Miquelon
+SaintVincent.png|Saint Vincent and the Grenadines|St. Vincent and the Grenadines
+Samoa.png|Independent State of Samoa
+SanMarino.png|Republic of San Marino
+SaoTomeAndPrincipe.png|Sao Tome|Democratic Republic of Sao Tome and Principe
+SaudiArabia.png|Kingdom of Saudi Arabia|KSA
+Scotland.png
+Senegal.png|Republic of Senegal
+Serbia.png|Republic of Serbia
+Seychelles.png|Republic of Seychelles
+SierraLeone.png|Republic of Sierra Leone
+Singapore.png|Republic of Singapore
+Slovakia.png|Slovak Republic
+Slovenia.png|Republic of Slovenia
+SolomonIslands.png
+Somalia.png|Federal Republic of Somalia
+SouthAfrica.png|Republic of South Africa
+SouthGeorgiaAndTheSouthSandwichIslands.png|SGSSI
+SouthKorea.png|Republic of Korea|ROK
+SouthSudan.png|Republic of South Sudan|Southern Sudan
+Spain.png|Kingdom of Spain
+SriLanka.png|Democratic Socialist Republic of Sri Lanka
+Sudan.png|Republic of the Sudan
+Suriname.png|Republic of Suriname
+Swaziland.png|Kingdom of Swaziland
+Sweden.png|Kingdom of Sweden
+Switzerland.png|Swiss Confederation
+Syria.png|Syrian Arab Republic
+Taiwan.png|Republic of China|ROC
+Tajikistan.png|Republic of Tajikistan
+TamilNation.png
+Tanzania.png|United Republic of Tanzania
+Thailand.png|Republic of Thailand
+TheGambia.png|Republic of the Gambia|Gambia
+Tibet.png
+TimorLeste.png|East Timor|Democratic Republic of Timor-Leste
+Togo.png|Togolese Republic
+Tonga.png|Kingdom of Tonga
+TrinidadAndTobago.png|Republic of Trinidad and Tobago
+Tunisia.png|Republic of Tunisia
+Turkey.png|Republic of Turkey
+Turkmenistan.png
+TurksandCaicosIslands.png
+Tuvalu.png
+Uganda.png|Republic of Uganda
+Ukraine.png
+UnitedArabEmirates.png
+UnitedKingdom.png|UK|United Kingdom of Great Britain and Northern Ireland|UKGBNI
+UnitedStates.png|United States of America|USA
+Uruguay.png|Oriental Republic of Uruguay
+Uzbekistan.png|Republic of Uzbekistan
+Vanuatu.png|Republic of Vanuatu
+Venezuela.png|Bolivarian Republic of Venezuela
+Vietnam.png|Socialist Republic of Vietnam
+VirginIslands.png
+Wales.png
+WallisAndFutuna.png
+Yemen.png|Republic of Yemen
+Zambia.png|Republic of Zambia
+Zimbabwe.png|Republic of Zimbabwe

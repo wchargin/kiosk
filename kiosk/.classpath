@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MigLayout"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Analysis-Core"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Cobra-0.98.5 (with patch)"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Customizable2"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/IcePDF"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Kiosk Broadcast Receiver"/>
+	<classpathentry kind="src" path="/LAFOptimizer"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

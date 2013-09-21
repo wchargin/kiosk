@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="distr" name="MUN Kiosk III">
+	<property file="build.properties" />
+	<!--this file was created by Eclipse Runnable JAR Export Wizard and since modified-->
+	<!--ANT 1.7 is required                                                           -->
+	<target name="kiosk_jar">
+		<fail unless="kiosk.jarversion" message="'kiosk.jarversion' property not set" />
+		<property name="kiosk.jarpath" value="${kiosk.base}/${kiosk.jarname}${kiosk.jarversion}.jar" />
+		<delete file="${kiosk.jarpath}" />
+		<jar destfile="${kiosk.jarpath}">
+			<manifest>
+				<attribute name="Main-Class" value="${jijlclass}" />
+				<attribute name="Rsrc-Main-Class" value="org.lcmmun.kiosk.gui.Kiosk" />
+				<attribute name="Class-Path" value="." />
+				<attribute name="Rsrc-Class-Path" value="./ miglayout-4.0-swing.jar broadcast-core.jar analysis-core.jar cobra-gp-0.98.5.jar js.jar icepdf-core.jar" />
+				<attribute name="SplashScreen-Image" value="org/lcmmun/kiosk/resources/splash_nobox.png" />
+			</manifest>
+			<zipfileset src="jar-in-jar-loader.zip" />
+			<fileset dir="C:/Users/William/Dropbox/EclipseJava/MUN Kiosk III/bin" />
+			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\MigLayout" includes="miglayout-4.0-swing.jar" />
+			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\Kiosk Broadcast Receiver" includes="broadcast-core.jar" />
+			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\Kiosk Speech Analysis" includes="analysis-core.jar" />
+			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\cobra-0.98.4\lib" includes="cobra-gp-0.98.5.jar" />
+			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\cobra-0.98.4\lib" includes="js.jar" />
+			<fileset dir="C:/Users/William/Dropbox/EclipseJava/Customizable2/bin" />
+			<fileset dir="C:/Users/William/Dropbox/EclipseJava/LAFOptimizer/bin" />
+			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\IcePDF" includes="icepdf-core.jar" />
+		</jar>
+		<echo level="info" taskname="kiosk_jar">Created kiosk jar successfully</echo>
+	</target>
+
+	<target name="sa_jar">
+		<fail unless="sa.jarversion" message="'sa.jarversion' property not set" />
+		<property name="sa.jarpath" value="${sa.base}/${sa.jarname}${sa.jarversion}.jar" />
+		<delete file="${sa.jarpath}" />
+		<jar destfile="${sa.jarpath}">
+			<manifest>
+				<attribute name="Main-Class" value="${jijlclass}" />
+				<attribute name="Rsrc-Main-Class" value="org.lcmmun.kiosk.speechanalysis.SpeechAnalyzer" />
+				<attribute name="Class-Path" value="." />
+				<attribute name="Rsrc-Class-Path" value="./ miglayout-4.0-swing.jar jfreechart-1.0.14.jar jcommon-1.0.17.jar" />
+			</manifest>
+			<zipfileset src="jar-in-jar-loader.zip" />
+			<fileset dir="C:/Users/William/Dropbox/EclipseJava/Kiosk Speech Analysis/bin" />
+			<fileset dir="C:/Users/William/Dropbox/EclipseJava/Customizable2/bin" />
+			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\MigLayout" includes="miglayout-4.0-swing.jar" />
+			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\JFreeChart\jfreechart-1.0.14\lib" includes="jcommon-1.0.17.jar jfreechart-1.0.14.jar" />
+			<fileset dir="C:/Users/William/Dropbox/EclipseJava/LAFOptimizer/bin" />
+		</jar>
+		<echo level="info" taskname="sa_jar">Created analyzer jar successfully</echo>
+	</target>
+
+	<target name="br_jar">
+		<fail unless="br.jarversion" message="'br.jarversion' property not set" />
+		<property name="br.jarpath" value="${br.base}/${br.jarname}${br.jarversion}.jar" />
+		<delete file="${br.jarpath}" />
+		<jar destfile="${br.jarpath}">
+			<manifest>
+				<attribute name="Main-Class" value="${jijlclass}" />
+				<attribute name="Rsrc-Main-Class" value="org.lcmmun.kiosk.broadcast.gui.BroadcastReceiver" />
+				<attribute name="Class-Path" value="." />
+				<attribute name="Rsrc-Class-Path" value="./ miglayout-4.0-swing.jar" />
+			</manifest>
+			<zipfileset src="jar-in-jar-loader.zip" />
+			<fileset dir="C:/Users/William/Dropbox/EclipseJava/Kiosk Broadcast Receiver/bin" />
+			<fileset dir="C:/Users/William/Dropbox/EclipseJava/Customizable2/bin" />
+			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\MigLayout" includes="miglayout-4.0-swing.jar" />
+			<fileset dir="C:/Users/William/Dropbox/EclipseJava/LAFOptimizer/bin" />
+		</jar>
+		<echo level="info" taskname="br_jar">Created receiver jar successfully</echo>
+	</target>
+
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
+	        :${launch4j.dir}/lib/xstream.jar" />
+
+	<taskdef name="nsis" classname="com.danielreese.nsisant.Task" classpath="${nsisantpath}" />
+
+	<!--
+	   - Windows distribution
+	   - This generates Windows executables and an installer
+	   -->
+	<target name="windows">
+		<echo taskname="windows" level="info">Generating Windows executables</echo>
+		<launch4j configfile="${kiosk.l4jc}" outfile="${kiosk.exe}" />
+		<launch4j configfile="${sa.l4jc}" outfile="${sa.exe}" />
+		<launch4j configfile="${br.l4jc}" outfile="${br.exe}" />
+
+		<echo taskname="windows" level="info">Copying Windows executables</echo>
+		<copy todir="${winpath}" overwrite="yes" file="${kiosk.exe}" />
+		<copy todir="${winpath}" overwrite="yes" file="${sa.exe}" />
+		<copy todir="${winpath}" overwrite="yes" file="${br.exe}" />
+
+		<echo taskname="windows" level="info">Creating NSIS installer</echo>
+		<nsis script="${nsisscript}" path="${nsispath}" verbosity="0" />
+		<echo taskname="windows" level="info">Windows distribution completed</echo>
+	</target>
+
+	<!--
+	   - Mac distribution
+	   - This updates jarfiles in existing Mac application bundles.
+	   -->
+	<target name="mac">
+		<echo taskname="mac" level="info">Updating Mac application bundles</echo>
+		<!-- Jar Bundler does funny things when building from Windows (chmod
+		     doesn't work) so we'll just update the jarfiles. -->
+
+		<copy todir="${macpath}/${kiosk.app}/${bundlejavapath}" file="${kiosk.jarpath}" overwrite="yes" verbose="false" />
+		<copy todir="${macpath}/${sa.app}/${bundlejavapath}" file="${sa.jarpath}" overwrite="yes" verbose="false" />
+		<copy todir="${macpath}/${br.app}/${bundlejavapath}" file="${br.jarpath}" overwrite="yes" verbose="false" />
+
+		<echo taskname="mac" level="info">Mac distribution completed</echo>
+	</target>
+
+	<!--
+	   - Linux distribution
+	   - This copies jarfiles to the Linux Jar file directory
+	   -->
+	<target name="linux">
+		<echo taskname="linux" level="info">Updating Linux jar files</echo>
+		<delete dir="${linuxpath}" file="*" />
+		<copy todir="${linuxpath}" file="${kiosk.jarpath}" overwrite="yes" />
+		<copy todir="${linuxpath}" file="${sa.jarpath}" overwrite="yes" />
+		<copy todir="${linuxpath}" file="${br.jarpath}" overwrite="yes" />
+		<echo taskname="linux" level="info">Linux distribution completed</echo>
+	</target>
+
+	<target name="distr" depends="kiosk_jar, sa_jar, br_jar">
+		<antcall target="windows" />
+		<antcall target="mac" />
+		<antcall target="linux" />
+		<echo taskname="distr" level="info">Distribution completed</echo>
+	</target>
+</project>

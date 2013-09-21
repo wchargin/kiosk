@@ -1,0 +1,34 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\William\Dropbox\EclipseJava\MUN Kiosk III\kiosk-3.0.jar</jar>
+  <outfile>C:\Users\William\Dropbox\ConferenceApplications\Windows\Kiosk.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>true</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest></manifest>
+  <icon>C:\Users\William\Dropbox\EclipseJava\MUN Kiosk III\icon\icon.ico</icon>
+  <jre>
+    <path></path>
+    <minVersion>1.6.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+  </jre>
+  <versionInfo>
+    <fileVersion>3.0.0.0</fileVersion>
+    <txtFileVersion>3.0</txtFileVersion>
+    <fileDescription>MUN Kiosk and Debate Management System</fileDescription>
+    <copyright>2012 William Chargin</copyright>
+    <productVersion>3.0.0.0</productVersion>
+    <txtProductVersion>3.0</txtProductVersion>
+    <productName>Kiosk III</productName>
+    <companyName>League of Creative Minds</companyName>
+    <internalName>kiosk</internalName>
+    <originalFilename>Kiosk.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>
