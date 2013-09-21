@@ -53,7 +53,28 @@
 <li><p><strong>Working papers and resolutions.</strong> Kiosk allows chairs to entertain motions to introduce working papers submitted as PDF files or published with Google Docs. Delegates can then hold formal caucuses to discuss the papers, in which the relevant papers will automatically be projected. If delegates use Google Docs, the displayed paper will be automatically updated.</p></li>
 <li><p><strong>Speech analysis.</strong> If a committee has multiple chairs, one can be designated as the speech analyzer. By opening the Speech Analyzer companion application, the chair will see a record of each speech as it is begun, and can analyze it on various qualities in real-time. The speech records can then be exported to <a href="http://en.wikipedia.org/wiki/Comma-separated_values">CSV</a> format (human-readable and supported by Excel, Google Sheets, and LibreOffice Calc), and the chairs can see real-time graphs of how often each delegate has spoken.</p></li>
 <li><p><strong>Transparency.</strong> To mitigate information overload or sparsity, Kiosk provides a separate Public Panel that can be projected for the delegates to see, while Kiosk's controls remain visible to the chairs only. The public panel adjusts its view according to the current context, and always displays exactly what delegates need to know at any given time – no more, no less – in a clear and elegant format.</p></li>
-</ul><p>Check out the <a href="https://docs.google.com/file/d/0B5NL1qvOouLnUVlMVDEzaGxhaUU/edit">Kiosk user manual</a> for more features.</p>
+</ul><p>Check out the <a href="https://docs.google.com/file/d/0B5NL1qvOouLnUVlMVDEzaGxhaUU/edit">Kiosk user manual</a> for more features, or look below for an analysis of features mentioned above.</p>
+
+<h2>
+<a name="feature-analysis" class="anchor" href="#feature-analysis"><span class="octicon octicon-link"></span></a>Feature analysis</h2>
+
+<h3>
+<a name="automatic-motion-management" class="anchor" href="#automatic-motion-management"><span class="octicon octicon-link"></span></a>Automatic motion management</h3>
+
+<p>Motions should be entertained in order from most disruptive to least disruptive... but what does that <em>mean</em>? Clearly, an unmoderated caucus is more disruptive than a moderated caucus, but where does a Motion to Divide the Question fall in there? How about a Motion to Change the Speaking Time?</p>
+
+<p>Kiosk's got you covered. The <a href="https://github.com/WChargin/kiosk/blob/master/kiosk/src/org/lcmmun/kiosk/motions/PrecedenceComparator.java"><code>PrecedenceComparator</code></a> class has a built-in ordering of motions. Whenever you add a motion to the floor, Kiosk will update the order of the list of motions on the floor to make sure the motions are sorted. Then, when you've added all the motions you'd like to entertain, simply press the "Process Motions" button and you'll vote on each motion, in order, one at a time, until one is passed. In the voting dialog, Kiosk also lets you know whether a motion is procedural or substantive (indicative of whether or not a delegate may abstain) and whether the motion requires a simple majority (more than half of the voting delegates must vote in favor) or a qualified majority (two-thirds or more of the voting delegates must vote in favor).</p>
+
+<p>If the motion performs an action such as moving into a caucus, changing the topic, or changing the speaking time, Kiosk will update the committee for you. Moderated caucuses have their own interface wherein the chairs can select speakers from a list of all present delegates, and two timers: one for the caucus overall, and one for the individual speakers. Unmoderated caucuses simply display a time bar.</p>
+
+<p>Motions will also be projected on the Public Panel for delegates to see.</p>
+
+<h3>
+<a name="crisis-management" class="anchor" href="#crisis-management"><span class="octicon octicon-link"></span></a>Crisis management</h3>
+
+<p>Need to introduce a crisis to your committee? Simply switch the view from "Standard Debate" to "View Crises" and you can design your crises without the delegates seeing. You can have as many crises stored as you want, and to each one you can attach a briefing to be displayed when the crises is deployed, as well as configure the guest speaker (if applicable) and Q&amp;A session settings.</p>
+
+<p>Whenever you're ready, just hit the "Deploy" button and the Public Panel's contents will immediately be replaced by a Crisis view. This will display the briefing, if any, and contain information on the guest speaker and Q&amp;A session timing (if any). When the crisis is over, the panel will return to the standard view.</p>
       </section>
     </div>
 
