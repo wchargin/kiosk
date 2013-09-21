@@ -1,6 +1,10 @@
 *.class
+*bin/
+icon/
 
 # Package Files #
 *.jar
 *.war
 *.ear
+*.exe
+*.xcf
