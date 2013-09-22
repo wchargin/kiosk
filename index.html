@@ -75,6 +75,70 @@
 <p>Need to introduce a crisis to your committee? Simply switch the view from "Standard Debate" to "View Crises" and you can design your crises without the delegates seeing. You can have as many crises stored as you want, and to each one you can attach a briefing to be displayed when the crises is deployed, as well as configure the guest speaker (if applicable) and Q&amp;A session settings.</p>
 
 <p>Whenever you're ready, just hit the "Deploy" button and the Public Panel's contents will immediately be replaced by a Crisis view. This will display the briefing, if any, and contain information on the guest speaker and Q&amp;A session timing (if any). When the crisis is over, the panel will return to the standard view.</p>
+
+<h3>
+<a name="working-papers-and-resolutions" class="anchor" href="#working-papers-and-resolutions"><span class="octicon octicon-link"></span></a>Working papers and resolutions</h3>
+
+<p>The traditional workflow for chairs with respect to working papers and resolutions is to get delegates to write papers, save them on a USB drive, give them to the chairs, and have the chairs project the documents in a word processing program. While this works, it's slow, repetitive, and error-prone. Kiosk allows you to integrate working papers and resolutions with Google Docs – an online word processing system commonly used by delegates anyway because it allows realtime collaboration – or with standard PDF files. Kiosk will automatically project the working papers in the Public Panel when appropriate; there's no need to worry about firing up a word processor.</p>
+
+<p>Kiosk uses the highly robust <a href="http://www.icesoft.org/java/projects/ICEpdf/overview.jsf">ICEpdf</a> library for PDF viewing, and a custom-built Google Docs engine that works with <a href="http://lobobrowser.org/cobra.jsp">Cobra</a>. To use a PDF, simply select a file when prompted. To integrate with Google Docs, ask the delegate to provide you with the document ID, which can be found in the URL of the published document. Publishing a document and obtaining the ID is as simple as selecting <strong>File</strong> → <strong>Publish to the web...</strong> within Google Docs, and then pressing the <strong>Start publishing</strong> button; the ID is the portion of the resultant URL between <code>/d/</code> and <code>/pub</code> (e.g., for the URL <code>docs.google.com/document/d/12345/pub</code>, the document ID would be 12345).</p>
+
+<h3>
+<a name="speech-analysis" class="anchor" href="#speech-analysis"><span class="octicon octicon-link"></span></a>Speech analysis</h3>
+
+<p>It can be a difficult task to pick out the best speeches from each delegate, and the best delegates from each committee. Speech analysis is a useful tool for quantitative (but still subjective) analysis of speeches from various delegates. It can be used for award selection, school evaluation, and performance improvements over time.</p>
+
+<p>To start the speech analysis, click <strong>Broadcast</strong> → <strong>Start Server</strong> on the main Kiosk application, then click <strong>Broadcast</strong> → <strong>Server Info</strong> and note the local IP address displayed in the displayed dialog. Then, on a separate computer, open the Speech Analyzer companion application and click the <strong>Connect</strong> button. Enter the IP address of the main Kiosk computer. Any subsequent speeches will be displayed in the Speech Analyzer, with the delegate's name, a timestamp, sliders to evaluate the four basic performance criteria, and a field for optional comments. The chair performing the analysis should adjust the sliders to evaluate the delegate's performance, add comments as needed, and then check the "Completed" checkbox to hide the analysis.</p>
+
+<p>At any time, you can click <strong>View</strong> → <strong>Speech Graph</strong> to see how many times each delegate has spoken, divided into categories of General Speakers' List speeches and moderated caucus speeches. This graph will update in realtime. Potential uses of this graph include identification of key delegates and choice of who should speak next, at the chair's discretion.</p>
+
+<p>You can periodically save the file as a Speech Analysis Index (<code>.sai</code>) file, and load it later when committee resumes after a break. You can export the speech records either by delegate averages for scores, or by individual speeches (which will include comments).</p>
+
+<h3>
+<a name="transparency" class="anchor" href="#transparency"><span class="octicon octicon-link"></span></a>Transparency</h3>
+
+<p>One extremely useful feature of Kiosk is its self-contained, automatically updated, context-sensitive Public Panel. You can open the Public Panel through <strong>View</strong> → <strong>Show Public Display</strong>. Then, if your computer is set up to a projector, you can extend your desktop (Windows: press <em>Start</em>-*P* and select <em>Extend</em>; Mac: in the <em>Displays</em> panel of System Preferences, uncheck <em>Mirror Displays</em>; Linux (Cinnamon): in the <em>Displays</em> panel of System Settings, uncheck <em>Mirror displays</em>) and drag the panel onto the projector. The delegates will see only what's displayed in the Public Panel, and you will see only what's in the Kiosk control panel.</p>
+
+<p>Here's what the Public Panel shows in various contexts:</p>
+
+<table>
+<thead><tr>
+<th align="center">Context</th>
+<th align="left">Content</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="center">General Speakers' List</td>
+<td align="left">An auto-scrolling upcoming speakers' list, the current speaker and time (if any), and motions on the floor</td>
+</tr>
+<tr>
+<td align="center">Moderated Caucus</td>
+<td align="left">The topic of the caucus, the caucus timer, the current speaker and time (if any)</td>
+</tr>
+<tr>
+<td align="center">Unmoderated Caucus</td>
+<td align="left">The caucus timer</td>
+</tr>
+<tr>
+<td align="center">Formal Caucus</td>
+<td align="left">The relevant working paper or resolution</td>
+</tr>
+<tr>
+<td align="center">"View Documents" mode</td>
+<td align="left">The relevant working paper or resolution</td>
+</tr>
+<tr>
+<td align="center">Voting Bloc</td>
+<td align="left">A description of voting bloc rules (no notes, chamber doors secured)</td>
+</tr>
+<tr>
+<td align="center">Crisis</td>
+<td align="left">The crisis briefing (if any), description of guest speaker (if any), and Q&amp;A session timer (if any)</td>
+</tr>
+</tbody>
+</table><p>You can also use the Public Panel to get delegates' attention. Simply click <strong>Flash "Decorum"</strong> if delegates are neglecting the rules of parliamentary etiquette, and the word <em>decorum</em> will appear on top of the Public Panel in flashing red letters. You can also flash a message of your choice, if you prefer.</p>
+
+<hr><p>For more features and detailed information, consider reading the <a href="https://docs.google.com/file/d/0B5NL1qvOouLnUVlMVDEzaGxhaUU/edit">Kiosk manual</a>.</p>
       </section>
     </div>
 
