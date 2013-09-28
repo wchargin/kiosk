@@ -1,0 +1,7 @@
+# Ignore output directories
+Windows/
+Mac/
+Linux/
+
+# Ignore NSIS resources
+nsis_rsc/
