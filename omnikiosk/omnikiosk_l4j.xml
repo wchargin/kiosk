@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\Users\William\Dropbox\EclipseJava\Omnikiosk\omnikiosk-1.2.jar</jar>
-  <outfile>C:\Users\William\Dropbox\ConferenceApplications\Windows\Applications\OmniKiosk.exe</outfile>
+  <jar>C:\Users\William\Documents\GitHub\kiosk\omnikiosk\omnikiosk-1.2.jar</jar>
+  <outfile>C:\Users\William\Documents\GitHub\kiosk\dist\Windows\Applications\OmniKiosk.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>

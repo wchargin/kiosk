@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\Users\William\Dropbox\EclipseJava\MUN Kiosk III\kiosk-3.0.jar</jar>
-  <outfile>C:\Users\William\Dropbox\ConferenceApplications\Windows\Kiosk.exe</outfile>
+  <jar>C:\Users\William\Documents\GitHub\kiosk\kiosk\kiosk-3.1.jar</jar>
+  <outfile>C:\Users\William\Documents\GitHub\kiosk\dist\Windows\Kiosk.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -12,7 +12,7 @@
   <customProcName>true</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>C:\Users\William\Dropbox\EclipseJava\MUN Kiosk III\icon\icon.ico</icon>
+  <icon>C:\Users\William\Documents\GitHub\kiosk\kiosk\icon\icon.ico</icon>
   <jre>
     <path></path>
     <minVersion>1.6.0</minVersion>

@@ -16,15 +16,15 @@
 				<attribute name="SplashScreen-Image" value="org/lcmmun/kiosk/resources/splash_nobox.png" />
 			</manifest>
 			<zipfileset src="jar-in-jar-loader.zip" />
-			<fileset dir="C:/Users/William/Dropbox/EclipseJava/MUN Kiosk III/bin" />
-			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\MigLayout" includes="miglayout-4.0-swing.jar" />
-			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\Kiosk Broadcast Receiver" includes="broadcast-core.jar" />
-			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\Kiosk Speech Analysis" includes="analysis-core.jar" />
-			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\cobra-0.98.4\lib" includes="cobra-gp-0.98.5.jar" />
-			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\cobra-0.98.4\lib" includes="js.jar" />
-			<fileset dir="C:/Users/William/Dropbox/EclipseJava/Customizable2/bin" />
-			<fileset dir="C:/Users/William/Dropbox/EclipseJava/LAFOptimizer/bin" />
-			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\IcePDF" includes="icepdf-core.jar" />
+			<fileset dir="${kiosk.base}/bin" />
+			<zipfileset dir="${libpath}/miglayout" includes="miglayout-4.0-swing.jar" />
+			<zipfileset dir="${br.base}/" includes="broadcast-core.jar" />
+			<zipfileset dir="${sa.base}" includes="analysis-core.jar" />
+			<zipfileset dir="${libpath}/cobra" includes="cobra-gp-0.98.5.jar" />
+			<zipfileset dir="${libpath}/cobra" includes="js.jar" />
+			<fileset dir="${projpath}/Customizable2/bin" />
+			<fileset dir="${projpath}/laf-optimizer/bin" />
+			<zipfileset dir="${libpath}/IcePDF" includes="icepdf-core.jar" />
 		</jar>
 		<echo level="info" taskname="kiosk_jar">Created kiosk jar successfully</echo>
 	</target>
@@ -41,11 +41,11 @@
 				<attribute name="Rsrc-Class-Path" value="./ miglayout-4.0-swing.jar jfreechart-1.0.14.jar jcommon-1.0.17.jar" />
 			</manifest>
 			<zipfileset src="jar-in-jar-loader.zip" />
-			<fileset dir="C:/Users/William/Dropbox/EclipseJava/Kiosk Speech Analysis/bin" />
-			<fileset dir="C:/Users/William/Dropbox/EclipseJava/Customizable2/bin" />
-			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\MigLayout" includes="miglayout-4.0-swing.jar" />
-			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\JFreeChart\jfreechart-1.0.14\lib" includes="jcommon-1.0.17.jar jfreechart-1.0.14.jar" />
-			<fileset dir="C:/Users/William/Dropbox/EclipseJava/LAFOptimizer/bin" />
+			<fileset dir="${sa.base}/bin" />
+			<fileset dir="${projpath}/Customizable2/bin" />
+			<zipfileset dir="${libpath}/miglayout" includes="miglayout-4.0-swing.jar" />
+			<zipfileset dir="${libpath}/jfreechart" includes="jcommon-1.0.17.jar jfreechart-1.0.14.jar" />
+			<fileset dir="${projpath}/laf-optimizer/bin" />
 		</jar>
 		<echo level="info" taskname="sa_jar">Created analyzer jar successfully</echo>
 	</target>
@@ -62,10 +62,10 @@
 				<attribute name="Rsrc-Class-Path" value="./ miglayout-4.0-swing.jar" />
 			</manifest>
 			<zipfileset src="jar-in-jar-loader.zip" />
-			<fileset dir="C:/Users/William/Dropbox/EclipseJava/Kiosk Broadcast Receiver/bin" />
-			<fileset dir="C:/Users/William/Dropbox/EclipseJava/Customizable2/bin" />
-			<zipfileset dir="C:\Users\William\Dropbox\EclipseJava\MigLayout" includes="miglayout-4.0-swing.jar" />
-			<fileset dir="C:/Users/William/Dropbox/EclipseJava/LAFOptimizer/bin" />
+			<fileset dir="${br.base}/bin" />
+			<fileset dir="${projpath}/Customizable2/bin" />
+			<zipfileset dir="${libpath}/miglayout" includes="miglayout-4.0-swing.jar" />
+			<fileset dir="${projpath}/laf-optimizer/bin" />
 		</jar>
 		<echo level="info" taskname="br_jar">Created receiver jar successfully</echo>
 	</target>
