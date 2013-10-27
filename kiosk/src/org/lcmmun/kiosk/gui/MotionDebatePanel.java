@@ -60,7 +60,7 @@ public class MotionDebatePanel extends JPanel {
 	/**
 	 * Whether the "for" side is speaking.
 	 */
-	private boolean isFor = true;
+	private boolean isFor;
 
 	/**
 	 * Creates the motion debate panel for the given motion.
@@ -85,9 +85,14 @@ public class MotionDebatePanel extends JPanel {
 
 		final boolean forAndAgainst = debatability == Debatability.FOR_AND_AGAINST;
 
+		// If it's both for and against, then the for side starts.
+		// If it's not, then the against side starts.
+		isFor = forAndAgainst;
+
 		setLayout(new MigLayout());
 
-		final DelegateSelectionPanel dspFor = new DelegateSelectionPanel(null, true);
+		final DelegateSelectionPanel dspFor = new DelegateSelectionPanel(null,
+				true);
 		final DelegateSelectionPanel dspAgainst = new DelegateSelectionPanel(
 				null, true);
 
@@ -132,7 +137,9 @@ public class MotionDebatePanel extends JPanel {
 				} else {
 					speakersAgainst++;
 				}
-				lblSpeaking.setText(isFor ? Messages.getString("MotionDebatePanel.InFavor") : Messages.getString("MotionDebatePanel.Against")); //$NON-NLS-1$ //$NON-NLS-2$
+				lblSpeaking
+						.setText(isFor ? Messages
+								.getString("MotionDebatePanel.InFavor") : Messages.getString("MotionDebatePanel.Against")); //$NON-NLS-1$ //$NON-NLS-2$
 				lblSpeaking.setForeground(Color.getHSBColor(isFor ? (1f / 3f)
 						: 0f, 1f, 0.75f));
 				dspFor.setEnabled(false);
@@ -163,9 +170,11 @@ public class MotionDebatePanel extends JPanel {
 						(newFor ? dspFor : dspAgainst).setEnabled(true);
 					}
 					lblSpeaking.setText(count < MAX_SPEAKERS ? Character
-							.toString(' ') : Messages.getString("MotionDebatePanel.Finished")); //$NON-NLS-1$
+							.toString(' ') : Messages
+							.getString("MotionDebatePanel.Finished")); //$NON-NLS-1$
 					lblSpeaking.setForeground(Color.getHSBColor(2f / 3f, 1f,
 							0.75f));
+					isFor = newFor;
 				}
 			}
 		});
