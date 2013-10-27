@@ -14,8 +14,6 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
@@ -173,26 +171,6 @@ public class SpeakersListPanel extends JPanel {
 		JPanel pnlControls = new JPanel(new MigLayout());
 		add(pnlControls, BorderLayout.SOUTH);
 
-		dpDelegate.setDescription(Messages
-				.getString("SpeakersListPanel.SelectToAdd")); //$NON-NLS-1$
-		pnlControls.add(new PropertyPanel(new PropertySet(dpDelegate), true,
-				false), new CC().grow().push().spanY());
-		dpDelegate.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				Delegate selectedDelegate = dpDelegate.getValue();
-				if (selectedDelegate != null) {
-					speakersList.listModel.add(selectedDelegate);
-					comboModel.remove(selectedDelegate);
-					dpDelegate.setList(comboModel);
-					dpDelegate.setValue(null);
-				}
-			}
-		});
-
-		pnlControls.add(new JSeparator(SwingConstants.VERTICAL), new CC()
-				.growY().spanY());
-
 		final JButton btnUp = new JButton(new AbstractAction(null,
 				ImageFetcher.fetchImageIcon(ImageType.UP)) {
 
@@ -204,7 +182,7 @@ public class SpeakersListPanel extends JPanel {
 						.getSelectedIndex() - 1);
 			}
 		});
-		pnlControls.add(btnUp, new CC().grow());
+		pnlControls.add(btnUp, new CC().growX().pushX());
 		btnUp.setEnabled(false);
 
 		final JButton btnDelete = new JButton(new AbstractAction(null,
@@ -214,7 +192,7 @@ public class SpeakersListPanel extends JPanel {
 				removeSelectedDelegate();
 			}
 		});
-		pnlControls.add(btnDelete, new CC().grow().spanY().wrap());
+		pnlControls.add(btnDelete, new CC().growX().pushX());
 		btnDelete.setEnabled(false);
 
 		final JButton btnDown = new JButton(new AbstractAction(null,
@@ -227,8 +205,25 @@ public class SpeakersListPanel extends JPanel {
 						.getSelectedIndex() + 1);
 			}
 		});
-		pnlControls.add(btnDown, new CC().grow());
+		pnlControls.add(btnDown, new CC().growX().pushX());
 		btnDown.setEnabled(false);
+
+		dpDelegate.setDescription(Messages
+				.getString("SpeakersListPanel.SelectToAdd")); //$NON-NLS-1$
+		pnlControls.add(new PropertyPanel(new PropertySet(dpDelegate), true,
+				false), new CC().grow().spanX().push().newline());
+		dpDelegate.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				Delegate selectedDelegate = dpDelegate.getValue();
+				if (selectedDelegate != null) {
+					speakersList.listModel.add(selectedDelegate);
+					comboModel.remove(selectedDelegate);
+					dpDelegate.setList(comboModel);
+					dpDelegate.setValue(null);
+				}
+			}
+		});
 
 		// Keyboard delete.
 		speakersList.list.addKeyListener(new KeyAdapter() {
