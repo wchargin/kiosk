@@ -7,6 +7,7 @@ import javax.swing.event.ChangeListener;
 
 import org.lcmmun.kiosk.Delegate;
 import org.lcmmun.kiosk.Messages;
+import org.lcmmun.kiosk.gui.TimePresetProperty;
 
 import tools.customizable.TextProperty;
 import tools.customizable.Time;
@@ -47,7 +48,8 @@ public class ModeratedCaucusMotion extends CaucusMotion {
 		super(proposingDelegate);
 
 		speakingTime = new Time(0, 0, 30);
-		final TimeProperty tpSpeakingTime = new TimeProperty(Messages.getString("ModeratedCaucusMotion.SpeakingTime"), //$NON-NLS-1$
+		final TimeProperty tpSpeakingTime = new TimePresetProperty(
+				Messages.getString("ModeratedCaucusMotion.SpeakingTime"), //$NON-NLS-1$
 				speakingTime);
 		propertySet.add(tpSpeakingTime);
 		tpSpeakingTime.addChangeListener(new ChangeListener() {
@@ -58,7 +60,8 @@ public class ModeratedCaucusMotion extends CaucusMotion {
 			}
 		});
 
-		final TextProperty purpose = new TextProperty(Messages.getString("ModeratedCaucusMotion.PropertyPurpose"), new String()); //$NON-NLS-1$
+		final TextProperty purpose = new TextProperty(
+				Messages.getString("ModeratedCaucusMotion.PropertyPurpose"), new String()); //$NON-NLS-1$
 		propertySet.add(purpose);
 		purpose.addChangeListener(new ChangeListener() {
 			@Override

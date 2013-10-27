@@ -244,7 +244,7 @@ public class CommitteeWizard extends JDialog {
 			}
 		});
 
-		final TimeProperty tpTime = new TimeProperty(
+		final TimeProperty tpTime = new TimePresetProperty(
 				Messages.getString("Kiosk.PropertyCommitteeSpeakingTime"), //$NON-NLS-1$
 				committee.speakingTime);
 		psCommittee.add(tpTime);

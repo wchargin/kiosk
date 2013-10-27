@@ -103,9 +103,10 @@ public class CrisisEditor extends JPanel {
 				Messages.getString("CrisisEditor.PropertyQASession"), qaTime != null, Messages.getString("CrisisEditor.PropertyValueQASessionYes"), Messages.getString("CrisisEditor.PropertyValueQASessionNo")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ps.add(tfpQaSession);
 
-		final TimeProperty tpQaTime = new TimeProperty(
+		final TimeProperty tpQaTime = new TimePresetProperty(
 				Messages.getString("CrisisEditor.PropertyQALength"), //$NON-NLS-1$
-				qaTime == null ? new Time(0, 5, 0) : qaTime);
+				qaTime == null ? new Time(0, 5, 0) : qaTime,
+				TimePresetProperty.LONG_PRESETS);
 		ps.add(tpQaTime);
 
 		tfpGuestSpeaker.addChangeListener(new ChangeListener() {
