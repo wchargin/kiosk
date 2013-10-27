@@ -49,9 +49,19 @@ public class DelegateIcon implements Serializable {
 		public static final int SMALL_SIZE = 24;
 
 		/**
+		 * The side length of the medium size icon.
+		 */
+		public static final int MEDIUM_SIZE = 48;
+
+		/**
 		 * The large image.
 		 */
 		private BufferedImage large;
+
+		/**
+		 * The medium image.
+		 */
+		private BufferedImage medium;
 
 		/**
 		 * The small image.
@@ -126,6 +136,15 @@ public class DelegateIcon implements Serializable {
 	 */
 	public BufferedImage getLargeIcon() {
 		return icons.get(getType()).large;
+	}
+
+	/**
+	 * Gets the medium icon for the current type.
+	 * 
+	 * @return the medium icon
+	 */
+	public BufferedImage getMediumIcon() {
+		return icons.get(getType()).medium;
 	}
 
 	/**
@@ -242,12 +261,16 @@ public class DelegateIcon implements Serializable {
 
 		BufferedImage biLarge = new BufferedImage(IconSet.LARGE_SIZE,
 				IconSet.LARGE_SIZE, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage biMedium = new BufferedImage(IconSet.MEDIUM_SIZE,
+				IconSet.MEDIUM_SIZE, BufferedImage.TYPE_INT_ARGB);
 		BufferedImage biSmall = new BufferedImage(IconSet.SMALL_SIZE,
 				IconSet.SMALL_SIZE, BufferedImage.TYPE_INT_ARGB);
 		iconSet.large = biLarge;
+		iconSet.medium = biMedium;
 		iconSet.small = biSmall;
 
 		Graphics2D g2dLarge = (Graphics2D) biLarge.getGraphics();
+		Graphics2D g2dMedium = (Graphics2D) biMedium.getGraphics();
 		Graphics2D g2dSmall = (Graphics2D) biSmall.getGraphics();
 		g2dLarge.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
@@ -256,6 +279,7 @@ public class DelegateIcon implements Serializable {
 
 		// Save values.
 		Shape originalClipLarge = g2dLarge.getClip();
+		Shape originalClipMedium = g2dMedium.getClip();
 		Shape originalClipSmall = g2dSmall.getClip();
 
 		// Draw image.
@@ -263,6 +287,7 @@ public class DelegateIcon implements Serializable {
 		case COLOR:
 			// Outlined orb with highlights.
 			final int outlineWidthLarge = 4; // pixels
+			final int outlineWidthMedium = 3; // pixels
 			final int outlineWidthSmall = 2; // pixels
 
 			if (color == null) {
@@ -273,6 +298,8 @@ public class DelegateIcon implements Serializable {
 
 			GradientPaint gpFillLarge = new GradientPaint(0, 0, fillTop, 0,
 					IconSet.LARGE_SIZE, fillBottom);
+			GradientPaint gpFillMedium = new GradientPaint(0, 0, fillTop, 0,
+					IconSet.MEDIUM_SIZE, fillBottom);
 			GradientPaint gpFillSmall = new GradientPaint(0, 0, fillTop, 0,
 					IconSet.SMALL_SIZE, fillBottom);
 
@@ -282,6 +309,12 @@ public class DelegateIcon implements Serializable {
 					outlineWidthLarge / 2, IconSet.LARGE_SIZE
 							- outlineWidthLarge - 1, IconSet.LARGE_SIZE
 							- outlineWidthLarge - 1);
+			Ellipse2D eFullMedium = new Ellipse2D.Double(0, 0,
+					IconSet.MEDIUM_SIZE - 1, IconSet.MEDIUM_SIZE - 1);
+			Ellipse2D eInsetMedium = new Ellipse2D.Double(
+					outlineWidthMedium / 2, outlineWidthMedium / 2,
+					IconSet.MEDIUM_SIZE - outlineWidthMedium - 1,
+					IconSet.MEDIUM_SIZE - outlineWidthMedium - 1);
 			Ellipse2D eFullSmall = new Ellipse2D.Double(0, 0,
 					IconSet.SMALL_SIZE - 1, IconSet.SMALL_SIZE - 1);
 			Ellipse2D eInsetSmall = new Ellipse2D.Double(outlineWidthSmall / 2,
@@ -289,40 +322,55 @@ public class DelegateIcon implements Serializable {
 							- outlineWidthSmall - 1, IconSet.SMALL_SIZE
 							- outlineWidthSmall - 1);
 			g2dLarge.setPaint(gpFillLarge);
+			g2dMedium.setPaint(gpFillMedium);
 			g2dSmall.setPaint(gpFillSmall);
 			g2dLarge.clip(eFullLarge);
+			g2dMedium.clip(eFullMedium);
 			g2dSmall.clip(eFullSmall);
 			g2dLarge.fill(eInsetLarge);
+			g2dMedium.fill(eInsetMedium);
 			g2dSmall.fill(eInsetSmall);
 
 			Color highlightTop = new Color(255, 255, 255, 255 / 6);
 			Color highlightBottom = new Color(255, 255, 255, 255 / 3);
 			GradientPaint gpHighlightLarge = new GradientPaint(0, 0,
 					highlightTop, 0, IconSet.LARGE_SIZE / 2, highlightBottom);
+			GradientPaint gpHighlightMedium = new GradientPaint(0, 0,
+					highlightTop, 0, IconSet.MEDIUM_SIZE / 2, highlightBottom);
 			GradientPaint gpHighlightSmall = new GradientPaint(0, 0,
 					highlightTop, 0, IconSet.SMALL_SIZE / 2, highlightBottom);
 
 			g2dLarge.setPaint(gpHighlightLarge);
+			g2dMedium.setPaint(gpHighlightMedium);
 			g2dSmall.setPaint(gpHighlightSmall);
 
 			Ellipse2D eHighlightLarge = new Ellipse2D.Double(
 					-IconSet.LARGE_SIZE / 4, -IconSet.LARGE_SIZE / 1.5,
 					IconSet.LARGE_SIZE * 1.5, IconSet.LARGE_SIZE);
+			Ellipse2D eHighlightMedium = new Ellipse2D.Double(
+					-IconSet.MEDIUM_SIZE / 4, -IconSet.MEDIUM_SIZE / 1.5,
+					IconSet.MEDIUM_SIZE * 1.5, IconSet.MEDIUM_SIZE);
 			Ellipse2D eHighlightSmall = new Ellipse2D.Double(
 					-IconSet.SMALL_SIZE / 4, -IconSet.SMALL_SIZE / 1.5,
 					IconSet.SMALL_SIZE * 1.5, IconSet.SMALL_SIZE);
 			g2dLarge.fill(eHighlightLarge);
+			g2dMedium.fill(eHighlightMedium);
 			g2dSmall.fill(eHighlightSmall);
 
 			g2dLarge.setClip(new Rectangle2D.Double(0, 0, IconSet.LARGE_SIZE,
 					IconSet.LARGE_SIZE));
+			g2dSmall.setClip(new Rectangle2D.Double(0, 0, IconSet.MEDIUM_SIZE,
+					IconSet.MEDIUM_SIZE));
 			g2dSmall.setClip(new Rectangle2D.Double(0, 0, IconSet.SMALL_SIZE,
 					IconSet.SMALL_SIZE));
 			g2dLarge.setStroke(new BasicStroke(outlineWidthLarge));
+			g2dMedium.setStroke(new BasicStroke(outlineWidthMedium));
 			g2dSmall.setStroke(new BasicStroke(outlineWidthSmall));
 			g2dLarge.setColor(Color.BLACK);
+			g2dMedium.setColor(Color.BLACK);
 			g2dSmall.setColor(Color.BLACK);
 			g2dLarge.draw(eInsetLarge);
+			g2dMedium.draw(eInsetMedium);
 			g2dSmall.draw(eInsetSmall);
 
 			break;
@@ -338,6 +386,8 @@ public class DelegateIcon implements Serializable {
 				Image i = guess.icon.getImage();
 				g2dLarge.drawImage(i, 0, 0, IconSet.LARGE_SIZE,
 						IconSet.LARGE_SIZE, null);
+				g2dMedium.drawImage(i, 0, 0, IconSet.MEDIUM_SIZE,
+						IconSet.MEDIUM_SIZE, null);
 				g2dSmall.drawImage(i, 0, 0, IconSet.SMALL_SIZE,
 						IconSet.SMALL_SIZE, null);
 			}
@@ -351,9 +401,12 @@ public class DelegateIcon implements Serializable {
 					Image i = ImageIO.read(pathToImage);
 					Image large = i.getScaledInstance(IconSet.LARGE_SIZE,
 							IconSet.LARGE_SIZE, Image.SCALE_SMOOTH);
+					Image medium = i.getScaledInstance(IconSet.MEDIUM_SIZE,
+							IconSet.MEDIUM_SIZE, Image.SCALE_SMOOTH);
 					Image small = i.getScaledInstance(IconSet.SMALL_SIZE,
 							IconSet.SMALL_SIZE, Image.SCALE_SMOOTH);
 					g2dLarge.drawImage(large, 0, 0, null);
+					g2dMedium.drawImage(medium, 0, 0, null);
 					g2dSmall.drawImage(small, 0, 0, null);
 				}
 			} catch (Exception e) {
@@ -366,7 +419,12 @@ public class DelegateIcon implements Serializable {
 			break;
 		}
 		g2dLarge.setClip(originalClipLarge);
+		g2dMedium.setClip(originalClipMedium);
 		g2dSmall.setClip(originalClipSmall);
+
+		g2dLarge.dispose();
+		g2dMedium.dispose();
+		g2dSmall.dispose();
 	}
 
 }

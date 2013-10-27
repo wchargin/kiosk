@@ -157,6 +157,15 @@ public class Delegate implements Serializable, Comparable<Delegate> {
 	}
 
 	/**
+	 * Gets the affiliation of this delegate.
+	 * 
+	 * @return the affiliation
+	 */
+	public String getAffiliation() {
+		return affiliation;
+	}
+
+	/**
 	 * Gets the {@link DelegateIcon}. From this object, the actual icon may be
 	 * changed.
 	 * 
@@ -182,6 +191,25 @@ public class Delegate implements Serializable, Comparable<Delegate> {
 	 */
 	public Image getImage() {
 		return icon.getLargeIcon();
+	}
+
+	/**
+	 * Gets a small ({@value #MEDIUM_ICON_SIZE} by {@value #MEDIUM_ICON_SIZE})
+	 * version of the icon.
+	 * 
+	 * @return the medium icon
+	 */
+	public ImageIcon getMediumIcon() {
+		return new ImageIcon(getMediumImage());
+	}
+
+	/**
+	 * Gets the medium image of this delegate.
+	 * 
+	 * @return the medium image
+	 */
+	public Image getMediumImage() {
+		return icon.getMediumIcon();
 	}
 
 	public String getName() {
@@ -244,6 +272,16 @@ public class Delegate implements Serializable, Comparable<Delegate> {
 		pcs.removePropertyChangeListener(propertyName, listener);
 	}
 
+	/**
+	 * Sets the affiliation of this delegate.
+	 * 
+	 * @param affiliation
+	 *            the affiliation
+	 */
+	public void setAffiliation(String affiliation) {
+		this.affiliation = affiliation;
+	}
+
 	public void setName(String name) {
 		String oldName = this.name;
 		this.name = name;
@@ -259,25 +297,6 @@ public class Delegate implements Serializable, Comparable<Delegate> {
 	@Override
 	public String toString() {
 		return name;
-	}
-
-	/**
-	 * Gets the affiliation of this delegate.
-	 * 
-	 * @return the affiliation
-	 */
-	public String getAffiliation() {
-		return affiliation;
-	}
-
-	/**
-	 * Sets the affiliation of this delegate.
-	 * 
-	 * @param affiliation
-	 *            the affiliation
-	 */
-	public void setAffiliation(String affiliation) {
-		this.affiliation = affiliation;
 	}
 
 }
