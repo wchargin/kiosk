@@ -374,6 +374,17 @@ public class DocumentView extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * The key used for the {@code CardLayout} to show the tabbed pane with
+	 * document views.
+	 */
+	private static final String KEY_SHOW = JTabbedPane.class.getSimpleName();
+
+	/**
+	 * The key used for the {@code CardLayout} to hide all document views.
+	 */
+	private static final String KEY_HIDE = new String();
+
+	/**
 	 * The map of subviews. Each subview reads a different type of document.
 	 */
 	private final Map<Class<? extends DocumentSubView>, DocumentSubView> subviews;
@@ -412,8 +423,8 @@ public class DocumentView extends JPanel {
 			tab.addTab(v.getDisplayName(), v.getComponent());
 		}
 
-		add(tab, JTabbedPane.class.getSimpleName());
-		add(new JPanel(), new String());
+		add(tab, KEY_SHOW);
+		add(new JPanel(), KEY_HIDE);
 
 	}
 
@@ -421,9 +432,9 @@ public class DocumentView extends JPanel {
 	 * Updates the display of this document.
 	 */
 	public void updateDisplay() {
+		boolean set = false;
 		for (int i = 0; i < tab.getTabCount(); i++) {
 			Component t = tab.getComponentAt(i);
-			boolean set = false;
 			if (t instanceof DocumentSubView) {
 				DocumentSubView view = (DocumentSubView) t;
 				if (view.canDisplay(document)) {
@@ -437,15 +448,15 @@ public class DocumentView extends JPanel {
 					tab.setEnabledAt(i, false);
 				}
 			}
-			if (set) {
-				// We set something.
-				// Show it.
-				cl.show(this, JTabbedPane.class.getSimpleName());
-			} else {
-				// We unset everything.
-				// Hide it.
-				cl.show(this, new String());
-			}
+		}
+		if (set) {
+			// We set something.
+			// Show it.
+			cl.show(this, KEY_SHOW);
+		} else {
+			// We unset everything.
+			// Hide it.
+			cl.show(this, KEY_HIDE);
 		}
 	}
 
