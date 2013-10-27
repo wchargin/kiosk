@@ -225,7 +225,7 @@ Uganda.png|Republic of Uganda
 Ukraine.png
 UnitedArabEmirates.png
 UnitedKingdom.png|UK|United Kingdom of Great Britain and Northern Ireland|UKGBNI
-UnitedStates.png|United States of America|USA
+UnitedStates.png|United States of America|USA|US
 Uruguay.png|Oriental Republic of Uruguay
 Uzbekistan.png|Republic of Uzbekistan
 Vanuatu.png|Republic of Vanuatu
