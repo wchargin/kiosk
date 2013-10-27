@@ -3605,8 +3605,10 @@ public class Kiosk extends JFrame {
 	 * 
 	 * @param pm
 	 *            the motion to process
+	 * @return {@code true} if the user completed the dialog, or {@code false}
+	 *         if the user closed the dialog
 	 */
-	private <T extends Motion> void processMotion(final ProposedMotion<T> pm) {
+	private <T extends Motion> boolean processMotion(final ProposedMotion<T> pm) {
 		final T motion = pm.motion;
 		final Debatability debatability = motion.getDebatability();
 		if (debatability != null && debatability != Debatability.NONE) {
@@ -3640,13 +3642,14 @@ public class Kiosk extends JFrame {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(new MotionViewingPanel(motion, Kiosk.this.committee));
 
-		JButton btnOK = new JButton(OK_TEXT);
+		final JButton btnOK = new JButton(OK_TEXT);
 		panel.add(btnOK, BorderLayout.SOUTH);
 		dialog.getRootPane().setDefaultButton(btnOK);
 		btnOK.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				dialog.dispose();
+				btnOK.setEnabled(false);
 				if (motion.getResult().passed) {
 					floor.clear();
 					if (pm.ifPassed != null) {
@@ -3661,7 +3664,7 @@ public class Kiosk extends JFrame {
 		dialog.setLocationRelativeTo(Kiosk.this);
 		dialog.setModalityType(ModalityType.APPLICATION_MODAL);
 		dialog.setVisible(true);
-
+		return !btnOK.isEnabled();
 	}
 
 	/**
@@ -3673,12 +3676,23 @@ public class Kiosk extends JFrame {
 		speechPanel.stopSpeech();
 
 		final Iterator<ProposedMotion<? extends Motion>> it = floor.iterator();
+		int numFailed = 0;
 		while (it.hasNext()) {
 			ProposedMotion<? extends Motion> pm = it.next();
-			processMotion(pm);
+			if (!processMotion(pm)) {
+				// The user closed the dialog box; stop here
+				// Remove failed motions
+				for (int i = 0; i < numFailed; i++) {
+					floor.remove(0);
+				}
+				updateListOfMotions();
+				updateComponents();
+				return;
+			}
 			if (pm.motion.getResult().passed) {
 				break;
 			} else {
+				numFailed++;
 				updateListOfMotions();
 			}
 		}
