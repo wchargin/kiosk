@@ -18,8 +18,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -37,6 +39,8 @@ import org.lcmmun.kiosk.Delegate;
 import org.lcmmun.kiosk.DelegateIcon;
 import org.lcmmun.kiosk.IconType;
 import org.lcmmun.kiosk.Messages;
+import org.lcmmun.kiosk.resources.ImageFetcher;
+import org.lcmmun.kiosk.resources.ImageType;
 import org.lcmmun.kiosk.resources.flags.FileNameGuesser;
 
 public class DelegatesConfigurationPanel extends JPanel {
@@ -56,6 +60,53 @@ public class DelegatesConfigurationPanel extends JPanel {
 	 * button.
 	 */
 	private boolean removeMessageShown = false;
+
+	/**
+	 * The copy buffer for a delegate's icon that has been copied.
+	 */
+	private DelegateIcon copybufferIcon;
+
+	/**
+	 * A popup menu shown when a delegate's name is right-clicked on.
+	 * 
+	 * @author William Chargin
+	 * 
+	 */
+	private class DelegateContextMenu extends JPopupMenu {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@SuppressWarnings("serial")
+		public DelegateContextMenu(final Delegate d, final Runnable onPaste) {
+			JMenuItem mnCopyIcon = new JMenuItem(
+					new AbstractAction(
+							Messages.getString("DelegatesConfigurationPanel.PmiCopyIcon"), //$NON-NLS-1$
+							ImageFetcher.fetchImageIcon(ImageType.COPY)) {
+						@Override
+						public void actionPerformed(ActionEvent ae) {
+							copybufferIcon = d.getDelegateIcon();
+						}
+					});
+
+			JMenuItem mnPasteIcon = new JMenuItem(
+					new AbstractAction(
+							Messages.getString("DelegatesConfigurationPanel.PmiPasteIcon"), //$NON-NLS-1$
+							ImageFetcher.fetchImageIcon(ImageType.PASTE)) {
+						@Override
+						public void actionPerformed(ActionEvent ae) {
+							d.getDelegateIcon().set(copybufferIcon);
+							onPaste.run();
+						}
+					});
+			mnPasteIcon.setEnabled(copybufferIcon != null);
+
+			add(mnCopyIcon);
+			add(mnPasteIcon);
+		}
+	}
 
 	/**
 	 * Creates the panel to configure the delegates of the given committee.
@@ -195,6 +246,17 @@ public class DelegatesConfigurationPanel extends JPanel {
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent me) {
+				if (SwingUtilities.isRightMouseButton(me)) {
+					int index = list.locationToIndex(me.getPoint());
+					if (index != -1) {
+						new DelegateContextMenu(model.getElementAt(index),
+								new Runnable() {
+									public void run() {
+										list.repaint();
+									}
+								}).show(list, me.getPoint().x, me.getPoint().y);
+					}
+				}
 				if (me.getClickCount() > 1) {
 					actEdit.actionPerformed(null);
 				}
@@ -290,7 +352,8 @@ public class DelegatesConfigurationPanel extends JPanel {
 	 * @return the text
 	 */
 	private String getDelegateCountLabelText(int number) {
-		return Messages.getString("DelegatesConfigurationPanel.NumberOfDelegates") + number; //$NON-NLS-1$
+		return Messages
+				.getString("DelegatesConfigurationPanel.NumberOfDelegates") + number; //$NON-NLS-1$
 	}
 
 	/**

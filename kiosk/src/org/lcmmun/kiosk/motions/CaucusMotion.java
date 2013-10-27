@@ -5,6 +5,7 @@ import javax.swing.event.ChangeListener;
 
 import org.lcmmun.kiosk.Delegate;
 import org.lcmmun.kiosk.Messages;
+import org.lcmmun.kiosk.gui.TimePresetProperty;
 
 import tools.customizable.Time;
 import tools.customizable.TimeProperty;
@@ -39,7 +40,7 @@ public abstract class CaucusMotion extends AbstractMotion {
 		totalTime = new Time(0, 10, 0);
 
 		// Configure common feature of all caucuses: time.
-		final TimeProperty tpTotalTime = new TimeProperty(Messages.getString("CaucusMotion.TotalTime"), //$NON-NLS-1$
+		final TimeProperty tpTotalTime = new TimePresetProperty(Messages.getString("CaucusMotion.TotalTime"), //$NON-NLS-1$
 				totalTime);
 		propertySet.add(tpTotalTime);
 		tpTotalTime.addChangeListener(new ChangeListener() {

@@ -7,6 +7,7 @@ import javax.swing.event.ChangeListener;
 
 import org.lcmmun.kiosk.Delegate;
 import org.lcmmun.kiosk.Messages;
+import org.lcmmun.kiosk.gui.TimePresetProperty;
 
 import tools.customizable.CounterProperty;
 import tools.customizable.Time;
@@ -60,7 +61,7 @@ public class SpeakingTimeMotion extends AbstractMotion {
 		commentCount = startingCommentCount;
 		commentTime = startingCommentTime;
 
-		final TimeProperty tpSpeakingTime = new TimeProperty(
+		final TimeProperty tpSpeakingTime = new TimePresetProperty(
 				Messages.getString("SpeakingTimeMotion.PropertySpeakingTime"), time); //$NON-NLS-1$
 		tpSpeakingTime.addChangeListener(new ChangeListener() {
 			@Override
@@ -80,7 +81,8 @@ public class SpeakingTimeMotion extends AbstractMotion {
 		});
 		propertySet.add(cpCommentCount);
 
-		final TimeProperty tpCommentTime = new TimeProperty(Messages.getString("SpeakingTimeMotion.PropertyCommentTime"), //$NON-NLS-1$
+		final TimeProperty tpCommentTime = new TimePresetProperty(
+				Messages.getString("SpeakingTimeMotion.PropertyCommentTime"), //$NON-NLS-1$
 				startingCommentTime);
 		tpCommentTime.addChangeListener(new ChangeListener() {
 			@Override
@@ -125,9 +127,13 @@ public class SpeakingTimeMotion extends AbstractMotion {
 		ArrayList<String> desc = super.getDescriptions();
 		desc.add(time.toString()
 				+ Messages.getString("SpeakingTimeMotion.DescriptionWith") //$NON-NLS-1$
-				+ (commentCount > 0 ? (commentCount + " " //$NON-NLS-1$
-						+ (commentCount == 1 ? Messages.getString("SpeakingTimeMotion.DescriptionCommentSingular") : Messages.getString("SpeakingTimeMotion.DescriptionCommentPlural")) + " @ " + commentTime //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						.toString()) : Messages.getString("SpeakingTimeMotion.DescriptionNoComments"))); //$NON-NLS-1$
+				+ (commentCount > 0 ? (commentCount
+						+ " " //$NON-NLS-1$
+						+ (commentCount == 1 ? Messages
+								.getString("SpeakingTimeMotion.DescriptionCommentSingular") : Messages.getString("SpeakingTimeMotion.DescriptionCommentPlural")) + " @ " + commentTime //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						.toString())
+						: Messages
+								.getString("SpeakingTimeMotion.DescriptionNoComments"))); //$NON-NLS-1$
 		return desc;
 	}
 

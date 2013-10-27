@@ -2212,7 +2212,7 @@ public class Kiosk extends JFrame {
 			ps1.add(tpQuorum);
 
 			PropertySet ps2 = new PropertySet();
-			tpSpeakingTime = new TimeProperty(
+			tpSpeakingTime = new TimePresetProperty(
 					Messages.getString("Kiosk.PropertyBottomSpeakingTime"), //$NON-NLS-1$
 					committee.speakingTime);
 			tpSpeakingTime.addChangeListener(new ChangeListener() {
@@ -2607,9 +2607,9 @@ public class Kiosk extends JFrame {
 				Messages.getString("Kiosk.PropertyAutosave"), autosaveEnabled, Messages.getString("Kiosk.PropertyAutosaveEnabled"), Messages.getString("Kiosk.PropertyAutosaveDisabled")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ps.add(tfpAutosaveEnabled);
 
-		final TimeProperty tpInterval = new TimeProperty(
+		final TimeProperty tpInterval = new TimePresetProperty(
 				Messages.getString("Kiosk.PropertyAutosaveInterval"), //$NON-NLS-1$
-				autosaveInterval);
+				autosaveInterval, TimePresetProperty.LONG_PRESETS);
 		ps.add(tpInterval);
 		tpInterval.addChangeListener(new ChangeListener() {
 			@Override
@@ -2697,7 +2697,7 @@ public class Kiosk extends JFrame {
 				committee.getName());
 		ps.add(tpCommitteeName);
 
-		final TimeProperty tpTime = new TimeProperty(
+		final TimeProperty tpTime = new TimePresetProperty(
 				Messages.getString("Kiosk.PropertyCommitteeSpeakingTime"), //$NON-NLS-1$
 				committee.speakingTime);
 		ps.add(tpTime);
@@ -2706,7 +2706,7 @@ public class Kiosk extends JFrame {
 				Messages.getString("Kiosk.PropertyNumComments"), committee.numComments); //$NON-NLS-1$
 		ps.add(cpCommentCount);
 
-		final TimeProperty tpCommentLength = new TimeProperty(
+		final TimeProperty tpCommentLength = new TimePresetProperty(
 				Messages.getString("Kiosk.PropertyCommentLength"), //$NON-NLS-1$
 				committee.commentTime);
 		ps.add(tpCommentLength);
@@ -3211,9 +3211,9 @@ public class Kiosk extends JFrame {
 						new JLabel(Messages
 								.getString("Kiosk.UnilaterallyFormalPrompt")), BorderLayout.NORTH); //$NON-NLS-1$
 				PropertySet psUnilateralTime = new PropertySet();
-				psUnilateralTime.add(new TimeProperty(
+				psUnilateralTime.add(new TimePresetProperty(
 						Messages.getString("Kiosk.UnilateralFormalCaucusTimePrompt"), new Time(0, //$NON-NLS-1$
-								10, 0)));
+								10, 0), TimePresetProperty.LONG_PRESETS));
 				pnlUnilateralPrompt.add(new PropertyPanel(psUnilateralTime,
 						true, false), BorderLayout.CENTER);
 				if (JOptionPane.showConfirmDialog(
@@ -3605,8 +3605,10 @@ public class Kiosk extends JFrame {
 	 * 
 	 * @param pm
 	 *            the motion to process
+	 * @return {@code true} if the user completed the dialog, or {@code false}
+	 *         if the user closed the dialog
 	 */
-	private <T extends Motion> void processMotion(final ProposedMotion<T> pm) {
+	private <T extends Motion> boolean processMotion(final ProposedMotion<T> pm) {
 		final T motion = pm.motion;
 		final Debatability debatability = motion.getDebatability();
 		if (debatability != null && debatability != Debatability.NONE) {
@@ -3640,13 +3642,14 @@ public class Kiosk extends JFrame {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(new MotionViewingPanel(motion, Kiosk.this.committee));
 
-		JButton btnOK = new JButton(OK_TEXT);
+		final JButton btnOK = new JButton(OK_TEXT);
 		panel.add(btnOK, BorderLayout.SOUTH);
 		dialog.getRootPane().setDefaultButton(btnOK);
 		btnOK.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				dialog.dispose();
+				btnOK.setEnabled(false);
 				if (motion.getResult().passed) {
 					floor.clear();
 					if (pm.ifPassed != null) {
@@ -3661,7 +3664,7 @@ public class Kiosk extends JFrame {
 		dialog.setLocationRelativeTo(Kiosk.this);
 		dialog.setModalityType(ModalityType.APPLICATION_MODAL);
 		dialog.setVisible(true);
-
+		return !btnOK.isEnabled();
 	}
 
 	/**
@@ -3673,12 +3676,23 @@ public class Kiosk extends JFrame {
 		speechPanel.stopSpeech();
 
 		final Iterator<ProposedMotion<? extends Motion>> it = floor.iterator();
+		int numFailed = 0;
 		while (it.hasNext()) {
 			ProposedMotion<? extends Motion> pm = it.next();
-			processMotion(pm);
+			if (!processMotion(pm)) {
+				// The user closed the dialog box; stop here
+				// Remove failed motions
+				for (int i = 0; i < numFailed; i++) {
+					floor.remove(0);
+				}
+				updateListOfMotions();
+				updateComponents();
+				return;
+			}
 			if (pm.motion.getResult().passed) {
 				break;
 			} else {
+				numFailed++;
 				updateListOfMotions();
 			}
 		}
