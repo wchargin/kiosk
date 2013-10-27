@@ -15,12 +15,10 @@ import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
 
 import org.lcmmun.kiosk.Committee;
-import org.lcmmun.kiosk.Delegate;
 import org.lcmmun.kiosk.Messages;
 import org.lcmmun.kiosk.motions.Motion;
 
 import tools.customizable.MessageProperty;
-import tools.customizable.MultipleChoiceProperty;
 import tools.customizable.PropertyPanel;
 import tools.customizable.PropertySet;
 
@@ -59,15 +57,14 @@ public class MotionConfigurationPanel extends JPanel {
 
 		PropertySet propertySet = new PropertySet();
 
-		final MultipleChoiceProperty<Delegate> mcpProposingDelegate = new MultipleChoiceProperty<Delegate>(
-				Messages.getString("MotionConfigurationPanel.PropertyProposingDelegate"), committee.getPresentDelegates(), //$NON-NLS-1$
-				motion.getProposingDelegate());
-		propertySet.add(mcpProposingDelegate);
-		mcpProposingDelegate.setRenderer(new DelegateRenderer());
-		mcpProposingDelegate.addChangeListener(new ChangeListener() {
+		final DelegateProperty dpProposingDelegate = new DelegateProperty(
+				Messages.getString("MotionConfigurationPanel.PropertyProposingDelegate"), //$NON-NLS-1$;
+				motion.getProposingDelegate(), committee.getPresentDelegates());
+		propertySet.add(dpProposingDelegate);
+		dpProposingDelegate.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
-				motion.setProposingDelegate(mcpProposingDelegate.getValue());
+				motion.setProposingDelegate(dpProposingDelegate.getValue());
 			}
 		});
 
