@@ -1,18 +1,18 @@
 package org.lcmmun.kiosk.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -38,6 +38,9 @@ import org.lcmmun.kiosk.gui.events.SpeechListener;
 import org.lcmmun.kiosk.resources.ImageFetcher;
 import org.lcmmun.kiosk.resources.ImageType;
 
+import tools.customizable.PropertyPanel;
+import tools.customizable.PropertySet;
+
 public class SpeakersListPanel extends JPanel {
 
 	/**
@@ -53,16 +56,7 @@ public class SpeakersListPanel extends JPanel {
 	/**
 	 * The model used in the combo box.
 	 */
-	private final DelegateModel comboModel = new DelegateModel(true);
-
-	/**
-	 * The combo box that allows for delegates to be added to the speakers'
-	 * list.
-	 */
-	private final JComboBox comboBox = new JComboBox(comboModel);
-	{
-		comboBox.setMaximumRowCount(comboBox.getMaximumRowCount() * 5 / 2);
-	}
+	private final List<Delegate> comboModel;
 
 	/**
 	 * The {@code EventListenerList} for this object.
@@ -79,6 +73,11 @@ public class SpeakersListPanel extends JPanel {
 	 * Whether the speakers' list allows delegates to begin speeches.
 	 */
 	private boolean canSpeak = true;
+
+	/**
+	 * The property for adding delegates to the speakers' list.
+	 */
+	private DelegateProperty dpDelegate;
 
 	/**
 	 * Creates the speakers list panel.
@@ -101,6 +100,12 @@ public class SpeakersListPanel extends JPanel {
 	@SuppressWarnings("serial")
 	public SpeakersListPanel(DelegateModel model, Collection<Delegate> delegates) {
 		super(new BorderLayout());
+
+		comboModel = new ArrayList<Delegate>();
+		if (delegates != null) {
+			comboModel.addAll(delegates);
+		}
+		dpDelegate = new DelegateProperty(null, comboModel);
 
 		speakersList = new DelegateSelectionPanel(model, false);
 
@@ -168,26 +173,19 @@ public class SpeakersListPanel extends JPanel {
 		JPanel pnlControls = new JPanel(new MigLayout());
 		add(pnlControls, BorderLayout.SOUTH);
 
-		comboBox.setRenderer(new DelegateRenderer());
-		comboBox.setToolTipText(Messages
+		dpDelegate.setDescription(Messages
 				.getString("SpeakersListPanel.SelectToAdd")); //$NON-NLS-1$
-		comboBox.setMinimumSize(new Dimension(200, 1));
-		pnlControls.add(comboBox, new CC().grow().pushX().spanY());
-		comboBox.addActionListener(new ActionListener() {
+		pnlControls.add(new PropertyPanel(new PropertySet(dpDelegate), true,
+				false), new CC().grow().push().spanY());
+		dpDelegate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				Object selectedItem = comboBox.getSelectedItem();
-				if (selectedItem != null) {
-					comboBox.setSelectedItem(null);
-					if (selectedItem instanceof Delegate) {
-						// Good. It should.
-						Delegate selectedDelegate = (Delegate) selectedItem;
-						speakersList.listModel.add(selectedDelegate);
-						comboModel.remove(selectedDelegate);
-					} else {
-						// ... that's weird. return.
-						return;
-					}
+				Delegate selectedDelegate = dpDelegate.getValue();
+				if (selectedDelegate != null) {
+					speakersList.listModel.add(selectedDelegate);
+					comboModel.remove(selectedDelegate);
+					dpDelegate.setList(comboModel);
+					dpDelegate.setValue(null);
 				}
 			}
 		});
@@ -406,16 +404,17 @@ public class SpeakersListPanel extends JPanel {
 	 * Updates the list and combo box so that they reflect the most recent
 	 * delegate configurations.
 	 */
+	@SuppressWarnings("unchecked")
 	public void updateDelegates(Collection<Delegate> newDelegateList) {
 		// Remove if it's no longer there, for both models.
-		for (DelegateModel model : new DelegateModel[] {
-				speakersList.listModel, comboModel }) {
-			Iterator<Delegate> iterator = model.getList().iterator();
+		for (List<Delegate> model : Arrays.<List<Delegate>> asList(
+				speakersList.listModel.getList(), comboModel)) {
+			Iterator<Delegate> iterator = model.iterator();
 			while (iterator.hasNext()) {
 				Delegate delegate = iterator.next();
 				if (!newDelegateList.contains(delegate)) {
 					// Ready to speak, but no longer here.
-					model.remove(delegate);
+					iterator.remove();
 				}
 			}
 		}
@@ -435,6 +434,7 @@ public class SpeakersListPanel extends JPanel {
 				comboModel.remove(delegate);
 			}
 		}
+		dpDelegate.setList(comboModel);
 	}
 
 	/**

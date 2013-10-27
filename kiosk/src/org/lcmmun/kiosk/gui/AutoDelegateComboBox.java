@@ -2,13 +2,14 @@ package org.lcmmun.kiosk.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -31,21 +32,15 @@ import org.lcmmun.kiosk.Delegate;
  * 
  */
 class AutoDelegateComboBox extends JComboBox {
-	
-	/**
-	 * The list of delegates.
-	 */
-	private final List<Delegate> list;
-	
+
 	class AutoTextFieldEditor extends BasicComboBoxEditor {
-		private final ImageIcon NO_ICON = new ImageIcon(new BufferedImage(
-				24, 24, BufferedImage.TYPE_INT_ARGB));
+		private final ImageIcon NO_ICON = new ImageIcon(new BufferedImage(24,
+				24, BufferedImage.TYPE_INT_ARGB));
 		private JLabel icon = new JLabel(NO_ICON);
 		private JPanel pnl = new JPanel(new BorderLayout());
 
 		AutoTextFieldEditor(List<Delegate> list) {
-			editor = new AutoDelegateTextField(list,
-					AutoDelegateComboBox.this);
+			editor = new AutoDelegateTextField(list, AutoDelegateComboBox.this);
 			pnl.add(editor);
 			pnl.add(icon, BorderLayout.WEST);
 		}
@@ -72,8 +67,8 @@ class AutoDelegateComboBox extends JComboBox {
 			 */
 			private static final long serialVersionUID = 1L;
 
-			public void insertString(int i, String s,
-					AttributeSet attributeset) throws BadLocationException {
+			public void insertString(int i, String s, AttributeSet attributeset)
+					throws BadLocationException {
 				if (s == null || s.isEmpty())
 					return;
 				String s1 = getText(0, i);
@@ -85,7 +80,7 @@ class AutoDelegateComboBox extends JComboBox {
 				}
 				if (autoComboBox != null && s2 != null) {
 					String name = s2;
-					for (Delegate delegate : list) {
+					for (Delegate delegate : getDataList()) {
 						if (name.equalsIgnoreCase(delegate.getName())) {
 							if (autoComboBox.getSelectedItem() == delegate) {
 								break;
@@ -114,7 +109,7 @@ class AutoDelegateComboBox extends JComboBox {
 				}
 				if (autoComboBox != null && s != null) {
 					String name = s;
-					for (Delegate delegate : list) {
+					for (Delegate delegate : getDataList()) {
 						if (name.equalsIgnoreCase(delegate.getName())) {
 							if (autoComboBox.getSelectedItem() == delegate) {
 								break;
@@ -178,8 +173,7 @@ class AutoDelegateComboBox extends JComboBox {
 			for (int i = 0; i < dataList.size(); i++) {
 				String s1 = dataList.get(i).toString();
 				if (s1 != null) {
-					if (!false
-							&& s1.toLowerCase().startsWith(s.toLowerCase()))
+					if (!false && s1.toLowerCase().startsWith(s.toLowerCase()))
 						return s1;
 				}
 			}
@@ -197,10 +191,8 @@ class AutoDelegateComboBox extends JComboBox {
 			AutoDocument lb = (AutoDocument) getDocument();
 			if (lb != null) {
 				try {
-					int i = Math.min(getCaret().getDot(), getCaret()
-							.getMark());
-					int j = Math.max(getCaret().getDot(), getCaret()
-							.getMark());
+					int i = Math.min(getCaret().getDot(), getCaret().getMark());
+					int j = Math.max(getCaret().getDot(), getCaret().getMark());
 					lb.replace(i, j - i, s, null);
 				} catch (Exception exception) {
 				}
@@ -229,23 +221,16 @@ class AutoDelegateComboBox extends JComboBox {
 	public AutoDelegateComboBox(List<Delegate> list) {
 		isFired = false;
 		autoTextFieldEditor = new AutoTextFieldEditor(list);
+		setDataList(list);
 		setEditable(true);
 		setRenderer(new DelegateRenderer());
-		setModel(new DefaultComboBoxModel(list.toArray()) {
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			protected void fireContentsChanged(Object obj, int i, int j) {
-				if (!isFired)
-					super.fireContentsChanged(obj, i, j);
-			}
-
-		});
-		this.list = list;
 		setEditor(autoTextFieldEditor);
+		addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				autoTextFieldEditor.selectAll();
+			}
+		});
 	}
 
 	protected void fireActionEvent() {
@@ -259,7 +244,11 @@ class AutoDelegateComboBox extends JComboBox {
 
 	public void setDataList(List<Delegate> list) {
 		autoTextFieldEditor.getAutoTextFieldEditor().setDataList(list);
-		setModel(new DefaultComboBoxModel(list.toArray()));
+		setModel(new DelegateModel(list, true));
+		Object selected = getSelectedItem();
+		if (selected != null && selected instanceof Delegate) {
+			autoTextFieldEditor.setIcon((Delegate) selected);
+		}
 	}
 
 	void setSelectedValue(Delegate d) {
@@ -268,8 +257,8 @@ class AutoDelegateComboBox extends JComboBox {
 		} else {
 			isFired = true;
 			setSelectedItem(d);
-			fireItemStateChanged(new ItemEvent(this, 701,
-					selectedItemReminder, 1));
+			fireItemStateChanged(new ItemEvent(this, 701, selectedItemReminder,
+					1));
 			isFired = false;
 			if (autoTextFieldEditor != null) {
 				autoTextFieldEditor.setIcon(d);

@@ -3748,6 +3748,7 @@ public class Kiosk extends JFrame {
 			}
 		} catch (Exception e) {
 			String message = e.getLocalizedMessage();
+			e.printStackTrace();
 			if (message == null || (message = message.trim()).isEmpty()) {
 				message = Messages.getString("Kiosk.ErrorCreatingMotionText"); //$NON-NLS-1$
 			}

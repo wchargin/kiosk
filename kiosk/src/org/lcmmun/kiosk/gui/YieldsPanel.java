@@ -167,9 +167,9 @@ public class YieldsPanel extends JPanel {
 			ypnlQuestions.add(label, new CC().grow().push());
 		} else {
 			parent.pauseSpeech();
-			final MultipleChoiceProperty<Delegate> mcpRecognize = new MultipleChoiceProperty<Delegate>(
-					Messages.getString("YieldsPanel.Recognize"), candidates, null); //$NON-NLS-1$
-			ypnlQuestions.add(new PropertyPanel(new PropertySet(mcpRecognize),
+			final DelegateProperty dpRecognize = new DelegateProperty(
+					Messages.getString("YieldsPanel.Recognize"), candidates); //$NON-NLS-1$
+			ypnlQuestions.add(new PropertyPanel(new PropertySet(dpRecognize),
 					true, false), new CC().grow().push().spanX().wrap());
 
 			final Map<String, ActionListener> buttonValues = new LinkedHashMap<String, ActionListener>();
@@ -182,7 +182,7 @@ public class YieldsPanel extends JPanel {
 											speaking, new Yield(
 													YieldType.QUESTIONS),
 											QuestionActionType.ASKING,
-											mcpRecognize.getValue()));
+											dpRecognize.getValue()));
 
 								}
 							});
@@ -291,6 +291,7 @@ public class YieldsPanel extends JPanel {
 
 		final ArrayList<Delegate> validYields = new ArrayList<Delegate>(
 				committee.getPresentDelegates());
+		validYields.remove(speaking);
 		if (validYields.isEmpty()) {
 			final JLabel label = new JLabel(
 					Messages.getString("YieldsPanel.NoDelegateToYieldTo")); //$NON-NLS-1$
@@ -298,9 +299,8 @@ public class YieldsPanel extends JPanel {
 			label.setVerticalAlignment(JLabel.CENTER);
 			ypnlDelegate.add(label, BorderLayout.CENTER);
 		} else {
-			validYields.remove(speaking);
-			final MultipleChoiceProperty<Delegate> mcpTarget = new MultipleChoiceProperty<Delegate>(
-					Messages.getString("YieldsPanel.Target"), validYields, validYields.get(0)); //$NON-NLS-1$
+			final DelegateProperty mcpTarget = new DelegateProperty(
+					Messages.getString("YieldsPanel.Target"), validYields); //$NON-NLS-1$
 			ypnlDelegate.add(new PropertyPanel(new PropertySet(mcpTarget),
 					true, false), BorderLayout.CENTER);
 

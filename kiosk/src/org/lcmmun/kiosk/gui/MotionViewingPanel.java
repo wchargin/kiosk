@@ -18,13 +18,11 @@ import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
 
 import org.lcmmun.kiosk.Committee;
-import org.lcmmun.kiosk.Delegate;
 import org.lcmmun.kiosk.Messages;
 import org.lcmmun.kiosk.MotionResult;
 import org.lcmmun.kiosk.motions.Motion;
 
 import tools.customizable.MessageProperty;
-import tools.customizable.MultipleChoiceProperty;
 import tools.customizable.PropertyPanel;
 import tools.customizable.PropertySet;
 
@@ -50,7 +48,8 @@ public class MotionViewingPanel extends JPanel {
 	public MotionViewingPanel(final Motion motion, Committee committee) {
 		super(new MigLayout(new LC().flowY()));
 
-		JLabel lblMotion = new JLabel(Messages.getString("MotionViewingPanel.MotionSuperTitle")); //$NON-NLS-1$
+		JLabel lblMotion = new JLabel(
+				Messages.getString("MotionViewingPanel.MotionSuperTitle")); //$NON-NLS-1$
 		add(lblMotion, new CC().growX().pushX());
 		lblMotion.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblMotion.setHorizontalAlignment(SwingConstants.CENTER);
@@ -68,15 +67,14 @@ public class MotionViewingPanel extends JPanel {
 
 		PropertySet propertySet = new PropertySet();
 
-		final MultipleChoiceProperty<Delegate> mcpProposingDelegate = new MultipleChoiceProperty<Delegate>(
-				Messages.getString("MotionViewingPanel.PropertyProposingDelegate"), committee.getPresentDelegates(), //$NON-NLS-1$
-				motion.getProposingDelegate());
-		propertySet.add(mcpProposingDelegate);
-		mcpProposingDelegate.setRenderer(new DelegateRenderer());
-		mcpProposingDelegate.addChangeListener(new ChangeListener() {
+		final DelegateProperty dpProposingDelegate = new DelegateProperty(
+				Messages.getString("MotionViewingPanel.PropertyProposingDelegate"), //$NON-NLS-1$
+				motion.getProposingDelegate(), committee.getPresentDelegates());
+		propertySet.add(dpProposingDelegate);
+		dpProposingDelegate.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent ce) {
-				motion.setProposingDelegate(mcpProposingDelegate.getValue());
+				motion.setProposingDelegate(dpProposingDelegate.getValue());
 			}
 		});
 
@@ -84,11 +82,14 @@ public class MotionViewingPanel extends JPanel {
 
 		propertySet.add(null); // separator
 
-		MessageProperty mpSubstantive = new MessageProperty(Messages.getString("MotionViewingPanel.PropertyMotionType"), //$NON-NLS-1$
-				motion.isSubstantive() ? Messages.getString("MotionViewingPanel.PropertyValueSubstantive") : Messages.getString("MotionViewingPanel.PropertyValueProcedural")); //$NON-NLS-1$ //$NON-NLS-2$
+		MessageProperty mpSubstantive = new MessageProperty(
+				Messages.getString("MotionViewingPanel.PropertyMotionType"), //$NON-NLS-1$
+				motion.isSubstantive() ? Messages
+						.getString("MotionViewingPanel.PropertyValueSubstantive") : Messages.getString("MotionViewingPanel.PropertyValueProcedural")); //$NON-NLS-1$ //$NON-NLS-2$
 		propertySet.add(mpSubstantive);
 
-		MessageProperty mpMajorityType = new MessageProperty(Messages.getString("MotionViewingPanel.PropertyMajorityType"), //$NON-NLS-1$
+		MessageProperty mpMajorityType = new MessageProperty(
+				Messages.getString("MotionViewingPanel.PropertyMajorityType"), //$NON-NLS-1$
 				motion.getMajorityType().toString());
 		propertySet.add(mpMajorityType);
 
