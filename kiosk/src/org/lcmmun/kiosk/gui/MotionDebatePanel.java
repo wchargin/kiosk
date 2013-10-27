@@ -7,6 +7,7 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.event.EventListenerList;
 
 import net.miginfocom.layout.CC;
 import net.miginfocom.swing.MigLayout;
@@ -55,12 +56,22 @@ public class MotionDebatePanel extends JPanel {
 	/**
 	 * The time allotted for these speeches.
 	 */
-	private static final Time TIME = new Time(0, 0, 30);
+	public static final Time TIME = new Time(0, 0, 30);
 
 	/**
 	 * Whether the "for" side is speaking.
 	 */
 	private boolean isFor;
+
+	/**
+	 * The list of in-favor listeners.
+	 */
+	private EventListenerList llInFavor = new EventListenerList();
+
+	/**
+	 * The list of against-listeners.
+	 */
+	private EventListenerList llAgainst = new EventListenerList();
 
 	/**
 	 * Creates the motion debate panel for the given motion.
@@ -151,12 +162,17 @@ public class MotionDebatePanel extends JPanel {
 				dspAgainst.listModel.remove(delegate);
 
 				panel.startSpeech(delegate, TIME, null);
+
 			}
 		};
 
 		panel.addSpeechListener(new SpeechListener() {
 			@Override
 			public void speechActionPerformed(SpeechEvent se) {
+				for (SpeechListener sl : (isFor ? llInFavor : llAgainst)
+						.getListeners(SpeechListener.class)) {
+					sl.speechActionPerformed(se);
+				}
 				if (se.type == SpeechEventType.FINISHED) {
 					// If we do both, it swaps. Otherwise, against.
 					final boolean newFor;
@@ -181,6 +197,46 @@ public class MotionDebatePanel extends JPanel {
 
 		dspFor.addDelegateSelectedListener(dsl);
 		dspAgainst.addDelegateSelectedListener(dsl);
-
 	}
+
+	/**
+	 * Adds a speech listener for speeches against.
+	 * 
+	 * @param sl
+	 *            the speech listener to add
+	 */
+	public void addSpeechAgainstListener(SpeechListener sl) {
+		llAgainst.add(SpeechListener.class, sl);
+	}
+
+	/**
+	 * Adds a speech listener for in-favor speeches.
+	 * 
+	 * @param sl
+	 *            the speech listener to add
+	 */
+	public void addSpeechInFavorListener(SpeechListener sl) {
+		llInFavor.add(SpeechListener.class, sl);
+	}
+
+	/**
+	 * Adds a speech listener for speeches against.
+	 * 
+	 * @param sl
+	 *            the speech listener to remove
+	 */
+	public void removeSpeechAgainstListener(SpeechListener sl) {
+		llAgainst.remove(SpeechListener.class, sl);
+	}
+
+	/**
+	 * Removes a speech listener for in-favor speeches.
+	 * 
+	 * @param sl
+	 *            the speech listener to remove
+	 */
+	public void removeSpeechInFavorListener(SpeechListener sl) {
+		llInFavor.remove(SpeechListener.class, sl);
+	}
+
 }

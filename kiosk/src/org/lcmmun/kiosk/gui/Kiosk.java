@@ -3617,6 +3617,18 @@ public class Kiosk extends JFrame {
 			dialog.setTitle(motion.getProposingDelegate().getName() + " - " //$NON-NLS-1$
 					+ motion.getMotionName());
 			MotionDebatePanel mdp = new MotionDebatePanel(motion, committee);
+			mdp.addSpeechInFavorListener(new SpeechListener() {
+				@Override
+				public void speechActionPerformed(SpeechEvent se) {
+					publicDisplay.speechInFavorOfMotion(se);
+				}
+			});
+			mdp.addSpeechAgainstListener(new SpeechListener() {
+				@Override
+				public void speechActionPerformed(SpeechEvent se) {
+					publicDisplay.speechAgainstMotion(se);
+				}
+			});
 			JPanel panel = new JPanel(new BorderLayout());
 			dialog.setContentPane(panel);
 			panel.add(mdp, BorderLayout.CENTER);
@@ -3634,6 +3646,7 @@ public class Kiosk extends JFrame {
 			dialog.setLocationRelativeTo(Kiosk.this);
 			dialog.setModalityType(ModalityType.APPLICATION_MODAL);
 			dialog.setVisible(true);
+			publicDisplay.clearMotionSpeeches();
 		}
 
 		final JDialog dialog = new JDialog(Kiosk.this);

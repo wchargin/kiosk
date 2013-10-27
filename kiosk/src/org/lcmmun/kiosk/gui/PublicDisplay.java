@@ -66,6 +66,76 @@ import tools.customizable.Time;
 public class PublicDisplay extends JFrame implements YieldListener,
 		YieldActionListener, SpeechListener {
 
+	class MotionSpeechPanel extends JPanel {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * The panel for speakers in favor.
+		 */
+		private JPanel pnlInFavor;
+
+		/**
+		 * The panel for speakers against.
+		 */
+		private JPanel pnlAgainst;
+
+		/**
+		 * The speech panel.
+		 */
+		private RadialImageSpeechPanel speech = new RadialImageSpeechPanel();
+
+		public MotionSpeechPanel() {
+			super(new MigLayout());
+			pnlInFavor = new JPanel(new MigLayout(new LC().flowY()));
+			pnlAgainst = new JPanel(new MigLayout(new LC().flowY()));
+			add(pnlInFavor, new CC().dockWest());
+			add(speech, new CC().grow().push());
+			add(pnlAgainst, new CC().dockEast());
+		}
+
+		private void speechAgainst(SpeechEvent se) {
+			processSpeech(se, pnlAgainst);
+		}
+
+		@SuppressWarnings("incomplete-switch")
+		private void processSpeech(SpeechEvent se, JPanel panel) {
+			switch (se.type) {
+			case STARTED:
+				speech.startSpeech(se.speaker, MotionDebatePanel.TIME);
+				panel.add(new JLabel(se.speaker.getMediumIcon()));
+				revalidate();
+				break;
+			case PAUSED:
+				speech.pauseSpeech();
+				break;
+			case FINISHED:
+				stopSpeech();
+				break;
+			}
+		}
+
+		private void speechInFavor(SpeechEvent se) {
+			processSpeech(se, pnlInFavor);
+		}
+
+		private void stopSpeech() {
+			speech.stopSpeech();
+		}
+
+		public void clear() {
+			stopSpeech();
+			pnlInFavor.removeAll();
+			pnlAgainst.removeAll();
+			pnlInFavor.revalidate();
+			pnlAgainst.revalidate();
+		}
+
+	}
+
 	/**
 	 * A glass pane to display a message.
 	 * 
@@ -325,6 +395,11 @@ public class PublicDisplay extends JFrame implements YieldListener,
 	}
 
 	/**
+	 * The panel used to display motion speeches.
+	 */
+	private final MotionSpeechPanel pnlMotionSpeech = new MotionSpeechPanel();
+
+	/**
 	 * The scrollpane for the {@linkplain #lstMotions motions list}.
 	 */
 	private final JScrollPane scpnMotionList = new JScrollPane(lstMotions,
@@ -487,7 +562,9 @@ public class PublicDisplay extends JFrame implements YieldListener,
 		pnlGeneralSpeakersList.add(pnlMotionsOnFloor);
 		pnlMotionsOnFloor.add(createTitleLabel(Messages
 				.getString("PublicDisplay.MotionsOnFloor")), ccTitle); //$NON-NLS-1$
-		pnlMotionsOnFloor.add(scpnMotionList, new CC().grow().pushY());
+		pnlMotionsOnFloor.add(scpnMotionList, new CC().grow().pushY().wrap());
+		pnlMotionsOnFloor.add(pnlMotionSpeech, new CC().grow().push().hideMode(3));
+		pnlMotionSpeech.setVisible(false);
 
 		JPanel pnlModeratedCaucus = new JPanel(new MigLayout());
 		pnlModeratedCaucus.add(createTitleLabel(Messages
@@ -880,4 +957,20 @@ public class PublicDisplay extends JFrame implements YieldListener,
 	public void yieldActionPerformed(YieldActionEvent yae) {
 		gslPanel.yieldActionPerformed(yae);
 	}
+
+	public void speechAgainstMotion(SpeechEvent se) {
+		pnlMotionSpeech.setVisible(true);
+		pnlMotionSpeech.speechAgainst(se);
+	}
+
+	public void speechInFavorOfMotion(SpeechEvent se) {
+		pnlMotionSpeech.setVisible(true);
+		pnlMotionSpeech.speechInFavor(se);
+	}
+
+	public void clearMotionSpeeches() {
+		pnlMotionSpeech.setVisible(false);
+		pnlMotionSpeech.clear();
+	}
+
 }

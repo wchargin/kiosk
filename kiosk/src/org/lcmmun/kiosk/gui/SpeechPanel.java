@@ -176,7 +176,7 @@ public class SpeechPanel extends JPanel {
 			server.pushCue(new AnalysisCue(delegate.getName(), delegate
 					.getAffiliation(), Context.SPEAKERS_LIST));
 		}
-
+		fireSpeechEvent(new SpeechEvent(this, delegate, SpeechEventType.STARTED));
 		speechProgress.start(speakingTime);
 	}
 
