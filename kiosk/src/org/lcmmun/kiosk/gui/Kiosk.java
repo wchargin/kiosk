@@ -764,7 +764,7 @@ public class Kiosk extends JFrame {
 		}
 		setIconImages(images);
 
-		publicDisplay.setIconImage(getIconImage());
+		publicDisplay.setIconImages(images);
 
 		{
 			// Configure glass pane.
