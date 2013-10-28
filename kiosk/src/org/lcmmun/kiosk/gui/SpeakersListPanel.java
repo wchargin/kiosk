@@ -217,7 +217,7 @@ public class SpeakersListPanel extends JPanel {
 							.getElementAt(index);
 					JPopupMenu popup = new JPopupMenu();
 					popup.add(new AbstractAction(String.format(
-							"Recognize %s (#%d)", at.getName(), index + 1), at
+							Messages.getString("SpeakersListPanel.PmiRecognizeDelegate"), at.getName(), index + 1), at //$NON-NLS-1$
 							.getSmallIcon()) {
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -230,14 +230,14 @@ public class SpeakersListPanel extends JPanel {
 							.getSize() - 1;
 
 					popup.add(new JSeparator());
-					popup.add(new AbstractAction("Remove", ImageFetcher
+					popup.add(new AbstractAction(Messages.getString("SpeakersListPanel.PmiRemove"), ImageFetcher //$NON-NLS-1$
 							.fetchImageIcon(ImageType.DELETE)) {
 						@Override
 						public void actionPerformed(ActionEvent ae) {
 							removeFromSpeakersList(at);
 						}
 					});
-					popup.add(new AbstractAction("Move to Top", ImageFetcher
+					popup.add(new AbstractAction(Messages.getString("SpeakersListPanel.PmiMoveToTop"), ImageFetcher //$NON-NLS-1$
 							.fetchImageIcon(ImageType.UP_STRONG)) {
 						{
 							setEnabled(canMoveUp);
@@ -250,7 +250,7 @@ public class SpeakersListPanel extends JPanel {
 							}
 						}
 					});
-					popup.add(new AbstractAction("Move Up", ImageFetcher
+					popup.add(new AbstractAction(Messages.getString("SpeakersListPanel.PmiMoveUp"), ImageFetcher //$NON-NLS-1$
 							.fetchImageIcon(ImageType.UP)) {
 						{
 							setEnabled(canMoveUp);
@@ -261,7 +261,7 @@ public class SpeakersListPanel extends JPanel {
 							speakersList.listModel.moveUp(index);
 						}
 					});
-					popup.add(new AbstractAction("Move Down", ImageFetcher
+					popup.add(new AbstractAction(Messages.getString("SpeakersListPanel.PmiMoveDown"), ImageFetcher //$NON-NLS-1$
 							.fetchImageIcon(ImageType.DOWN)) {
 						{
 							setEnabled(canMoveDown);
@@ -272,7 +272,7 @@ public class SpeakersListPanel extends JPanel {
 							speakersList.listModel.moveDown(index);
 						}
 					});
-					popup.add(new AbstractAction("Move to Bottom", ImageFetcher
+					popup.add(new AbstractAction(Messages.getString("SpeakersListPanel.PmiMoveToBottom"), ImageFetcher //$NON-NLS-1$
 							.fetchImageIcon(ImageType.DOWN_STRONG)) {
 						{
 							setEnabled(canMoveDown);
