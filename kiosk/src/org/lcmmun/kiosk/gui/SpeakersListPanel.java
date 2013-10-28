@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,18 +14,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import net.miginfocom.layout.CC;
-import net.miginfocom.swing.MigLayout;
 
 import org.lcmmun.kiosk.Committee;
 import org.lcmmun.kiosk.Delegate;
@@ -168,50 +167,11 @@ public class SpeakersListPanel extends JPanel {
 			}
 		});
 
-		JPanel pnlControls = new JPanel(new MigLayout());
-		add(pnlControls, BorderLayout.SOUTH);
-
-		final JButton btnUp = new JButton(new AbstractAction(null,
-				ImageFetcher.fetchImageIcon(ImageType.UP)) {
-
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				speakersList.listModel.moveUp(speakersList.list
-						.getSelectedIndex());
-				speakersList.list.setSelectedIndex(speakersList.list
-						.getSelectedIndex() - 1);
-			}
-		});
-		pnlControls.add(btnUp, new CC().growX().pushX());
-		btnUp.setEnabled(false);
-
-		final JButton btnDelete = new JButton(new AbstractAction(null,
-				ImageFetcher.fetchImageIcon(ImageType.DELETE)) {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				removeSelectedDelegate();
-			}
-		});
-		pnlControls.add(btnDelete, new CC().growX().pushX());
-		btnDelete.setEnabled(false);
-
-		final JButton btnDown = new JButton(new AbstractAction(null,
-				ImageFetcher.fetchImageIcon(ImageType.DOWN)) {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				speakersList.listModel.moveDown(speakersList.list
-						.getSelectedIndex());
-				speakersList.list.setSelectedIndex(speakersList.list
-						.getSelectedIndex() + 1);
-			}
-		});
-		pnlControls.add(btnDown, new CC().growX().pushX());
-		btnDown.setEnabled(false);
-
 		dpDelegate.setDescription(Messages
 				.getString("SpeakersListPanel.SelectToAdd")); //$NON-NLS-1$
-		pnlControls.add(new PropertyPanel(new PropertySet(dpDelegate), true,
-				false), new CC().grow().spanX().push().newline());
+		add(new PropertyPanel(new PropertySet(dpDelegate), true, false),
+				BorderLayout.SOUTH);
+
 		dpDelegate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
@@ -244,16 +204,90 @@ public class SpeakersListPanel extends JPanel {
 			}
 		});
 
-		// Enable/disable buttons.
-		speakersList.list.addListSelectionListener(new ListSelectionListener() {
+		speakersList.list.addMouseListener(new MouseAdapter() {
 			@Override
-			public void valueChanged(ListSelectionEvent lse) {
-				int index = speakersList.list.getSelectedIndex();
-				boolean selected = index != -1;
-				btnUp.setEnabled(selected && index != 0);
-				btnDown.setEnabled(selected
-						&& index != speakersList.listModel.getSize() - 1);
-				btnDelete.setEnabled(selected);
+			public void mouseClicked(MouseEvent me) {
+				if (SwingUtilities.isRightMouseButton(me)) {
+					final int index = speakersList.list.locationToIndex(me
+							.getPoint());
+					if (index == -1) {
+						return;
+					}
+					final Delegate at = speakersList.listModel
+							.getElementAt(index);
+					JPopupMenu popup = new JPopupMenu();
+					popup.add(new AbstractAction(String.format(
+							"Recognize %s (#%d)", at.getName(), index + 1), at
+							.getSmallIcon()) {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							startSpeech(at);
+						}
+					});
+
+					final boolean canMoveUp = index > 0;
+					final boolean canMoveDown = index < speakersList.listModel
+							.getSize() - 1;
+
+					popup.add(new JSeparator());
+					popup.add(new AbstractAction("Remove", ImageFetcher
+							.fetchImageIcon(ImageType.DELETE)) {
+						@Override
+						public void actionPerformed(ActionEvent ae) {
+							removeFromSpeakersList(at);
+						}
+					});
+					popup.add(new AbstractAction("Move to Top", ImageFetcher
+							.fetchImageIcon(ImageType.UP_STRONG)) {
+						{
+							setEnabled(canMoveUp);
+						}
+
+						@Override
+						public void actionPerformed(ActionEvent ae) {
+							for (int i = index; i > 0; i--) {
+								speakersList.listModel.moveUp(i);
+							}
+						}
+					});
+					popup.add(new AbstractAction("Move Up", ImageFetcher
+							.fetchImageIcon(ImageType.UP)) {
+						{
+							setEnabled(canMoveUp);
+						}
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							speakersList.listModel.moveUp(index);
+						}
+					});
+					popup.add(new AbstractAction("Move Down", ImageFetcher
+							.fetchImageIcon(ImageType.DOWN)) {
+						{
+							setEnabled(canMoveDown);
+						}
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							speakersList.listModel.moveDown(index);
+						}
+					});
+					popup.add(new AbstractAction("Move to Bottom", ImageFetcher
+							.fetchImageIcon(ImageType.DOWN_STRONG)) {
+						{
+							setEnabled(canMoveDown);
+						}
+
+						@Override
+						public void actionPerformed(ActionEvent ae) {
+							for (int i = index; i < speakersList.listModel
+									.getSize(); i++) {
+								speakersList.listModel.moveDown(i);
+							}
+						}
+					});
+					popup.show(speakersList, me.getX(), me.getY());
+				}
 			}
 		});
 	}

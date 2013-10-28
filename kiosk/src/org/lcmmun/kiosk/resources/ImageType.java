@@ -12,13 +12,13 @@ public enum ImageType {
 	AUTOSAVE("autosave.png"), BROADCAST_INFO("broadcast_info.png"), BROADCAST( //$NON-NLS-1$ //$NON-NLS-2$
 			"broadcast.png"), CLEAR_FLOOR("clearfloor.png"), COMMENTS( //$NON-NLS-1$ //$NON-NLS-2$
 			"comment.png"), CONFIGURE("configure.png"), COPY("page_copy.png"), DELETE("delete.png"), DOWN( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			"down.png"), EDIT_WORKING_PAPERS("editwpdr.png"), EXIT("exit.png"), INTRODUCE_DRAFT_RESOLUTION( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"down.png"), DOWN_STRONG("down_strong.png"), EDIT_WORKING_PAPERS("editwpdr.png"), EXIT("exit.png"), INTRODUCE_DRAFT_RESOLUTION( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			"wptodr.png"), INTRODUCE_WORKING_PAPER("introducewp.png"), LOAD( //$NON-NLS-1$ //$NON-NLS-2$
 			"load.png"), MANAGE_DELEGATES("managedelegates.png"), NEW("new.png"), OK( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			"ok.png"), MANUAL_MESSAGE("pushmessage.png"), OMNI_ICON( //$NON-NLS-1$ //$NON-NLS-2$
 			"omni_icon.png"), PASTE("page_paste.png"), QUORUM("quorum.png"), SAVE("save.png"), SAVE_AS( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			"saveas.png"), STEP_COMPLETED("bullet_green.png"), STEP_PENDING( //$NON-NLS-1$ //$NON-NLS-2$
-			"bullet_blue.png"), UP("up.png"), VOTE("vote.png"), WARNING( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"bullet_blue.png"), UP("up.png"), UP_STRONG("up_strong.png"), VOTE("vote.png"), WARNING( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			"warning.png"), WIZARD("wand.png"), WORKING_PAPERS("wpdr.png"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	CAUCUS_TIME_UP("alarm_clock.png"), DELEGATES_WISHING_TO_SPEAK( //$NON-NLS-1$
