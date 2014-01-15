@@ -48,7 +48,13 @@ public class SpeechEvent extends EventObject {
 		/**
 		 * Indicates that the speech has finished.
 		 */
-		FINISHED;
+		FINISHED,
+
+		/**
+		 * Indicates that a speech in progress has been canceled and that the
+		 * delegate should be returned to the top of the speakers' list.
+		 */
+		CANCELED;
 	}
 
 	/**

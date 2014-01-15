@@ -1947,7 +1947,8 @@ public class Kiosk extends JFrame {
 			speechPanel.addSpeechListener(new SpeechListener() {
 				@Override
 				public void speechActionPerformed(SpeechEvent se) {
-					if (se.type == SpeechEventType.FINISHED) {
+					switch (se.type) {
+					case FINISHED:
 						speechPanel.yield(new Yield(YieldType.CHAIR));
 						Delegate firstSpeaker = speakersListPanel
 								.getFirstSpeaker();
@@ -1955,6 +1956,12 @@ public class Kiosk extends JFrame {
 							pushDatum(DatumFactory
 									.createNextSpeakerDatum(firstSpeaker));
 						}
+						break;
+					case CANCELED:
+						speakersListPanel.getModel().add(0, se.speaker);
+						return;
+					default:
+						break; // don't care at the moment
 					}
 				}
 			});
