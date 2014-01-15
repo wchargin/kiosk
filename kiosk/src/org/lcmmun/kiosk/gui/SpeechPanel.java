@@ -1,16 +1,23 @@
 package org.lcmmun.kiosk.gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
 import org.lcmmun.kiosk.Committee;
 import org.lcmmun.kiosk.Delegate;
+import org.lcmmun.kiosk.Messages;
 import org.lcmmun.kiosk.Speech;
 import org.lcmmun.kiosk.Yield;
 import org.lcmmun.kiosk.gui.events.SpeechEvent;
@@ -49,6 +56,11 @@ public class SpeechPanel extends JPanel {
 	private final DelegateView view;
 
 	/**
+	 * The committee used by this speech panel is viewing.
+	 */
+	private Committee committee;
+
+	/**
 	 * The progress bar, showing the progress through the speech.
 	 */
 	private final TimeBar speechProgress;
@@ -77,8 +89,10 @@ public class SpeechPanel extends JPanel {
 	 *            the relevant committee; this may be {@code null} only if
 	 *            {@code yieldsAllowed} is {@code false}
 	 */
-	public SpeechPanel(boolean yieldsAllowed, Committee committee) {
+	public SpeechPanel(boolean yieldsAllowed, Committee c) {
 		super(new BorderLayout());
+
+		this.committee = c;
 
 		this.yieldsAllowed = yieldsAllowed;
 
@@ -102,14 +116,55 @@ public class SpeechPanel extends JPanel {
 		});
 
 		view.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("serial")
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				if (isEnabled() && delegate != null) {
-					if (me.getClickCount() == 1) {
-						pauseSpeech(); // or resume
+					if (SwingUtilities.isRightMouseButton(me)) {
+						// show popup menu
+						JPopupMenu popup = new JPopupMenu();
+
+						JMenuItem title = new JMenuItem(Messages.getString("SpeechPanel.PmiCurrentSpeaker") //$NON-NLS-1$
+								+ delegate, delegate.getSmallIcon());
+						popup.add(title);
+
+						popup.add(new JSeparator());
+
+						popup.add(new AbstractAction(Messages.getString("SpeechPanel.PmiStopSpeech")) { //$NON-NLS-1$
+							@Override
+							public void actionPerformed(ActionEvent ae) {
+								stopSpeech();
+							}
+						});
+
+						popup.add(new AbstractAction(
+								speechProgress.isRunning() ? Messages.getString("SpeechPanel.PmiPauseSpeech") //$NON-NLS-1$
+										: Messages.getString("SpeechPanel.PmiResumeSpeech")) { //$NON-NLS-1$
+							@Override
+							public void actionPerformed(ActionEvent ae) {
+								pauseSpeech();
+							}
+						});
+
+						popup.add(new AbstractAction(Messages.getString("SpeechPanel.PmiCancelSpeech")) { //$NON-NLS-1$
+							{
+								setToolTipText(Messages.getString("SpeechPanel.PmiCancelSpeechToolTip")); //$NON-NLS-1$
+							}
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								cancelSpeech();
+							}
+						});
+
+						popup.show(me.getComponent(), me.getX(), me.getY());
 					} else {
-						// Double-click or higher. Stop.
-						stopSpeech();
+						if (me.getClickCount() == 1) {
+							pauseSpeech(); // or resume
+						} else {
+							// Double-click or higher. Stop.
+							stopSpeech();
+						}
 					}
 				}
 			}
@@ -133,12 +188,75 @@ public class SpeechPanel extends JPanel {
 		listenerList.add(SpeechListener.class, safl);
 	}
 
+	public void addYieldActionListener(YieldActionListener yal) {
+		yieldsPanel.addYieldActionListener(yal);
+	}
+
+	public void addYieldListener(YieldListener yl) {
+		yieldsPanel.addYieldListener(yl);
+	}
+
+	/**
+	 * Stops the current speech and moves the speaker back to the top of the
+	 * speakers' list. This is equivalent to calling {@link #stopSpeech()} and
+	 * then firing a {@link org.lcmmun.kiosk.gui.events.SpeechEvent SpeechEvent}
+	 * of type {@link SpeechEventType#CANCELED}.
+	 */
+	public void cancelSpeech() {
+		Delegate was = delegate;
+		if (was != null) {
+			stopSpeech();
+			fireSpeechEvent(new SpeechEvent(this, was, SpeechEventType.CANCELED));
+		}
+	}
+
+	private void fireSpeechEvent(SpeechEvent se) {
+		for (SpeechListener sl : listenerList
+				.getListeners(SpeechListener.class)) {
+			sl.speechActionPerformed(se);
+		}
+	}
+
+	/**
+	 * Fires the given yield event to all registered listeners.
+	 * 
+	 * @param yieldEvent
+	 *            the event to fire
+	 */
+	protected void fireYieldEvent(YieldEvent yieldEvent) {
+		for (YieldListener listener : listenerList
+				.getListeners(YieldListener.class)) {
+			listener.yield(yieldEvent);
+		}
+	}
+
+	/**
+	 * Gets the delegate currently speaking.
+	 * 
+	 * @return the delegate
+	 */
+	public Delegate getDelegate() {
+		return delegate;
+	}
+
 	public int getSecondsElapsed() {
 		return speechProgress.getValue();
 	}
 
 	public int getTotalSeconds() {
 		return speechProgress.getMaximum();
+	}
+
+	/**
+	 * Pauses or resumes the current speech.
+	 */
+	public void pauseSpeech() {
+		if (speechProgress.isRunning()) {
+			speechProgress.pause();
+		} else {
+			speechProgress.resume();
+		}
+		fireSpeechEvent(new SpeechEvent(this, delegate, SpeechEventType.PAUSED));
 	}
 
 	/**
@@ -150,6 +268,25 @@ public class SpeechPanel extends JPanel {
 	 */
 	public void removeSpeechAlmostFinishedListener(SpeechListener safl) {
 		listenerList.remove(SpeechListener.class, safl);
+	}
+
+	public void removeYieldActionListener(YieldActionListener yal) {
+		yieldsPanel.removeYieldActionListener(yal);
+	}
+
+	public void removeYieldListener(YieldListener yl) {
+		yieldsPanel.removeYieldListener(yl);
+	}
+
+	/**
+	 * Sets the committee.
+	 * 
+	 * @param committee
+	 *            the new committee
+	 */
+	public void setCommittee(Committee committee) {
+		this.committee = committee;
+		yieldsPanel.setCommittee(committee);
 	}
 
 	/**
@@ -201,16 +338,6 @@ public class SpeechPanel extends JPanel {
 		} // else { no_need_to_do_anything(); }
 	}
 
-	/**
-	 * Sets the committee.
-	 * 
-	 * @param committee
-	 *            the new committee
-	 */
-	public void setCommittee(Committee committee) {
-		yieldsPanel.setCommittee(committee);
-	}
-
 	protected void yield(Yield yield) {
 		final YieldEvent yieldEvent = new YieldEvent(this, delegate, yield);
 		fireYieldEvent(yieldEvent);
@@ -229,63 +356,6 @@ public class SpeechPanel extends JPanel {
 			break;
 		default:
 			break;
-		}
-	}
-
-	/**
-	 * Fires the given yield event to all registered listeners.
-	 * 
-	 * @param yieldEvent
-	 *            the event to fire
-	 */
-	protected void fireYieldEvent(YieldEvent yieldEvent) {
-		for (YieldListener listener : listenerList
-				.getListeners(YieldListener.class)) {
-			listener.yield(yieldEvent);
-		}
-	}
-
-	/**
-	 * Gets the delegate currently speaking.
-	 * 
-	 * @return the delegate
-	 */
-	public Delegate getDelegate() {
-		return delegate;
-	}
-
-	public void addYieldListener(YieldListener yl) {
-		yieldsPanel.addYieldListener(yl);
-	}
-
-	public void removeYieldListener(YieldListener yl) {
-		yieldsPanel.removeYieldListener(yl);
-	}
-
-	public void addYieldActionListener(YieldActionListener yal) {
-		yieldsPanel.addYieldActionListener(yal);
-	}
-
-	public void removeYieldActionListener(YieldActionListener yal) {
-		yieldsPanel.removeYieldActionListener(yal);
-	}
-
-	/**
-	 * Pauses or resumes the current speech.
-	 */
-	public void pauseSpeech() {
-		if (speechProgress.isRunning()) {
-			speechProgress.pause();
-		} else {
-			speechProgress.resume();
-		}
-		fireSpeechEvent(new SpeechEvent(this, delegate, SpeechEventType.PAUSED));
-	}
-
-	private void fireSpeechEvent(SpeechEvent se) {
-		for (SpeechListener sl : listenerList
-				.getListeners(SpeechListener.class)) {
-			sl.speechActionPerformed(se);
 		}
 	}
 
