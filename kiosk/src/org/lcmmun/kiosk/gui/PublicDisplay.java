@@ -345,33 +345,7 @@ public class PublicDisplay extends JFrame implements YieldListener,
 	/**
 	 * The progress bar for the moderated caucus speaker.
 	 */
-	private final RadialImageProgressBar ripbModeratedCaucusProgress = new RadialImageProgressBar();
-
-	/**
-	 * The number of seconds elapsed in the moderated caucus speech.
-	 */
-	private int secondsElapsed = 0;
-
-	/**
-	 * The total number of seconds in the moderated caucus speech.
-	 */
-	private int totalSeconds = 0;
-
-	/**
-	 * The timer to update the moderated caucus speaker progress.
-	 */
-	private final Timer tModeratedCaucusSpeaker = new Timer(1000,
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent ae) {
-					ripbModeratedCaucusProgress
-							.setPercentage((double) (++secondsElapsed)
-									/ (double) (totalSeconds));
-					if (secondsElapsed == totalSeconds) {
-						ripbModeratedCaucusProgress.setImage(null);
-					}
-				}
-			});
+	private final RadialImageSpeechPanel rispModeratedCaucusProgress = new RadialImageSpeechPanel();
 
 	/**
 	 * The time bar used for the unmoderated caucus.
@@ -633,7 +607,7 @@ public class PublicDisplay extends JFrame implements YieldListener,
 				.pushX().wrap());
 		pnlModeratedCaucus.add(tbModeratedCaucusTotal, new CC().growX().pushX()
 				.wrap());
-		pnlModeratedCaucus.add(ripbModeratedCaucusProgress, new CC().grow()
+		pnlModeratedCaucus.add(rispModeratedCaucusProgress, new CC().grow()
 				.push());
 
 		JPanel pnlUnmoderatedCaucus = new JPanel(new MigLayout());
@@ -858,13 +832,8 @@ public class PublicDisplay extends JFrame implements YieldListener,
 	 * @param speakingTime
 	 *            the time
 	 */
-	public void startCaucusSpeech(Image speaker, int speakingTime) {
-		tModeratedCaucusSpeaker.stop();
-		secondsElapsed = 0;
-		totalSeconds = speakingTime;
-		tModeratedCaucusSpeaker.start();
-		ripbModeratedCaucusProgress.setPercentage(0);
-		ripbModeratedCaucusProgress.setImage(speaker);
+	public void startCaucusSpeech(Delegate speaker, Time speakingTime) {
+		rispModeratedCaucusProgress.startSpeech(speaker, speakingTime);
 	}
 
 	/**
@@ -958,19 +927,14 @@ public class PublicDisplay extends JFrame implements YieldListener,
 	 * Stops the current caucus moderated speech.
 	 */
 	public void stopCaucusSpeech() {
-		tModeratedCaucusSpeaker.stop();
-		ripbModeratedCaucusProgress.setImage(null);
+		rispModeratedCaucusProgress.stopSpeech();
 	}
 
 	/**
 	 * Pauses or resumes the current moderated caucus speech.
 	 */
 	public void pauseCaucusSpeech() {
-		if (tModeratedCaucusSpeaker.isRunning()) {
-			tModeratedCaucusSpeaker.stop();
-		} else {
-			tModeratedCaucusSpeaker.start();
-		}
+		rispModeratedCaucusProgress.pauseSpeech();
 	}
 
 	/**

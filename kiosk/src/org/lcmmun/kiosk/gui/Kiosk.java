@@ -1244,13 +1244,11 @@ public class Kiosk extends JFrame {
 														SpeechEvent se) {
 													switch (se.type) {
 													case STARTED:
-														final int seconds = mpe.motion
-																.getSpeakingTime()
-																.getTotalSeconds();
 														publicDisplay
 																.startCaucusSpeech(
-																		getSpeakerImageForDelegate(se.speaker),
-																		seconds);
+																		se.speaker,
+																		mpe.motion
+																				.getSpeakingTime());
 														break;
 													case FINISHED:
 														publicDisplay
