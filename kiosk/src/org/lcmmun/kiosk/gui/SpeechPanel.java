@@ -124,13 +124,15 @@ public class SpeechPanel extends JPanel {
 						// show popup menu
 						JPopupMenu popup = new JPopupMenu();
 
-						JMenuItem title = new JMenuItem(Messages.getString("SpeechPanel.PmiCurrentSpeaker") //$NON-NLS-1$
+						JMenuItem title = new JMenuItem(Messages
+								.getString("SpeechPanel.PmiCurrentSpeaker") //$NON-NLS-1$
 								+ delegate, delegate.getSmallIcon());
 						popup.add(title);
 
 						popup.add(new JSeparator());
 
-						popup.add(new AbstractAction(Messages.getString("SpeechPanel.PmiStopSpeech")) { //$NON-NLS-1$
+						popup.add(new AbstractAction(Messages
+								.getString("SpeechPanel.PmiStopSpeech")) { //$NON-NLS-1$
 							@Override
 							public void actionPerformed(ActionEvent ae) {
 								stopSpeech();
@@ -138,17 +140,21 @@ public class SpeechPanel extends JPanel {
 						});
 
 						popup.add(new AbstractAction(
-								speechProgress.isRunning() ? Messages.getString("SpeechPanel.PmiPauseSpeech") //$NON-NLS-1$
-										: Messages.getString("SpeechPanel.PmiResumeSpeech")) { //$NON-NLS-1$
+								speechProgress.isRunning() ? Messages
+										.getString("SpeechPanel.PmiPauseSpeech") //$NON-NLS-1$
+										: Messages
+												.getString("SpeechPanel.PmiResumeSpeech")) { //$NON-NLS-1$
 							@Override
 							public void actionPerformed(ActionEvent ae) {
 								pauseSpeech();
 							}
 						});
 
-						popup.add(new AbstractAction(Messages.getString("SpeechPanel.PmiCancelSpeech")) { //$NON-NLS-1$
+						popup.add(new AbstractAction(Messages
+								.getString("SpeechPanel.PmiCancelSpeech")) { //$NON-NLS-1$
 							{
-								setToolTipText(Messages.getString("SpeechPanel.PmiCancelSpeechToolTip")); //$NON-NLS-1$
+								setToolTipText(Messages
+										.getString("SpeechPanel.PmiCancelSpeechToolTip")); //$NON-NLS-1$
 							}
 
 							@Override
