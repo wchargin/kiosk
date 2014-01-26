@@ -538,6 +538,11 @@ public class PublicDisplay extends JFrame implements YieldListener,
 	private final TimeBar tbCrisis = new TimeBar();
 
 	/**
+	 * The quorum label.
+	 */
+	private JLabel lblQuorum;
+
+	/**
 	 * Creates the display for the given committee.
 	 * 
 	 * @param committee
@@ -563,7 +568,8 @@ public class PublicDisplay extends JFrame implements YieldListener,
 				.add(createTitleLabel(Messages.getString("PublicDisplay.GSL")), ccTitle); //$NON-NLS-1$
 
 		JPanel pnlNextSpeaker = new JPanel(new MigLayout());
-		JLabel lblNextText = new JLabel(Messages.getString("PublicDisplay.NextSpeakerLabel")); //$NON-NLS-1$
+		JLabel lblNextText = new JLabel(
+				Messages.getString("PublicDisplay.NextSpeakerLabel")); //$NON-NLS-1$
 		lblNextText.setFont(lblNextText.getFont().deriveFont(18f));
 		lblNextText.setHorizontalAlignment(JLabel.TRAILING);
 		pnlNextSpeaker.add(lblNextText, new CC());
@@ -592,7 +598,8 @@ public class PublicDisplay extends JFrame implements YieldListener,
 			@Override
 			public void contentsChanged(ListDataEvent e) {
 				if (speakersModel.getSize() == 0) {
-					lblNextValue.setText(Messages.getString("PublicDisplay.NextSpeakerNoneText")); //$NON-NLS-1$
+					lblNextValue.setText(Messages
+							.getString("PublicDisplay.NextSpeakerNoneText")); //$NON-NLS-1$
 					lblNextValue.setIcon(null);
 				} else {
 					Delegate d = speakersModel.getElementAt(0);
@@ -611,6 +618,9 @@ public class PublicDisplay extends JFrame implements YieldListener,
 		pnlGeneralSpeakersList.add(pnlMotionsOnFloor);
 		pnlMotionsOnFloor.add(createTitleLabel(Messages
 				.getString("PublicDisplay.MotionsOnFloor")), ccTitle); //$NON-NLS-1$
+		lblQuorum = createCenteredLabel(new String());
+		lblQuorum.setFont(lblQuorum.getFont().deriveFont(18f));
+		pnlMotionsOnFloor.add(lblQuorum, new CC().growX().pushX().wrap());
 		pnlMotionsOnFloor.add(scpnMotionList, new CC().grow().pushY().wrap());
 		pnlMotionsOnFloor.add(pnlMotionSpeech,
 				new CC().grow().push().hideMode(3));
@@ -1027,6 +1037,10 @@ public class PublicDisplay extends JFrame implements YieldListener,
 	public void clearMotionSpeeches() {
 		pnlMotionSpeech.setVisible(false);
 		pnlMotionSpeech.clear();
+	}
+
+	public void setQuorumText(String quorumText) {
+		lblQuorum.setText(quorumText);
 	}
 
 }
