@@ -4094,13 +4094,17 @@ public class Kiosk extends JFrame {
 		}
 
 		if (tpQuorum != null) {
-			tpQuorum.setValue(quorum == 0 ? Messages
+			String quorumText = quorum == 0 ? Messages
 					.getString("Kiosk.PropertyValueNoDelegatesPresent") : (Integer //$NON-NLS-1$
 							.toString((quorum / 2) + 1)
 							+ Messages.getString("Kiosk.QuorumSeparator") //$NON-NLS-1$
 							+ Integer.toString((int) (Math
 									.ceil(((quorum) * 2d) / 3d)))
-							+ Messages.getString("Kiosk.QuorumSeparator") + Integer.toString(quorum))); //$NON-NLS-1$
+							+ Messages.getString("Kiosk.QuorumSeparator") + Integer.toString(quorum));//$NON-NLS-1$
+			if (publicDisplay != null) {
+				publicDisplay.setQuorumText(quorumText);
+			}
+			tpQuorum.setValue(quorumText);
 		}
 		if (tpSpeakingTime != null) {
 			tpSpeakingTime.setValue(committee.speakingTime);
