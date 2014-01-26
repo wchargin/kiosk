@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -85,6 +88,12 @@ public class DelegatesConfigurationPanel extends JPanel {
 					new AbstractAction(
 							Messages.getString("DelegatesConfigurationPanel.PmiCopyIcon"), //$NON-NLS-1$
 							ImageFetcher.fetchImageIcon(ImageType.COPY)) {
+						{
+							putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+									'C', Toolkit.getDefaultToolkit()
+											.getMenuShortcutKeyMask()));
+						}
+
 						@Override
 						public void actionPerformed(ActionEvent ae) {
 							copybufferIcon = d.getDelegateIcon();
@@ -95,6 +104,13 @@ public class DelegatesConfigurationPanel extends JPanel {
 					new AbstractAction(
 							Messages.getString("DelegatesConfigurationPanel.PmiPasteIcon"), //$NON-NLS-1$
 							ImageFetcher.fetchImageIcon(ImageType.PASTE)) {
+						{
+							putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+									'V', Toolkit.getDefaultToolkit()
+											.getMenuShortcutKeyMask()));
+
+						}
+
 						@Override
 						public void actionPerformed(ActionEvent ae) {
 							d.getDelegateIcon().set(copybufferIcon);
@@ -319,6 +335,32 @@ public class DelegatesConfigurationPanel extends JPanel {
 				btnEdit.setEnabled(list.getSelectedIndices().length == 1);
 			}
 		});
+
+		list.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int index = list.getSelectedIndex();
+				if (index < 0) {
+					return;
+				}
+				Delegate d = delegates.get(index);
+				if (e.getModifiers() == Toolkit.getDefaultToolkit()
+						.getMenuShortcutKeyMask()) {
+					switch (e.getKeyCode()) {
+					case KeyEvent.VK_C:
+						// copy
+						copybufferIcon = d.getDelegateIcon();
+						break;
+					case KeyEvent.VK_V:
+						// paste
+						d.getDelegateIcon().set(copybufferIcon);
+						list.repaint();
+						break;
+					}
+				}
+			}
+		});
+
 		txtEntry.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
@@ -342,6 +384,7 @@ public class DelegatesConfigurationPanel extends JPanel {
 				process();
 			}
 		});
+
 	}
 
 	/**
