@@ -173,7 +173,7 @@ import util.LAFOptimizer;
  * @author William Chargin
  * 
  */
-@Version("3.1")
+@Version("3.2 \u03b2eta 2")
 public class Kiosk extends JFrame {
 
 	/**
