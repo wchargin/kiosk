@@ -255,6 +255,16 @@ public class SpeechPanel extends JPanel {
 	}
 
 	/**
+	 * Tests whether the speech is currently running.
+	 * 
+	 * @return {@code true} if the speech is running, or {@code false} if the
+	 *         speech is paused
+	 */
+	public boolean isRunning() {
+		return speechProgress.isRunning();
+	}
+
+	/**
 	 * Pauses or resumes the current speech.
 	 */
 	public void pauseSpeech() {

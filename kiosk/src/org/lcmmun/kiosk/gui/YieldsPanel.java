@@ -166,7 +166,9 @@ public class YieldsPanel extends JPanel {
 			label.setVerticalAlignment(JLabel.CENTER);
 			ypnlQuestions.add(label, new CC().grow().push());
 		} else {
-			parent.pauseSpeech();
+			if (parent.isRunning()) {
+				parent.pauseSpeech();
+			}
 			final DelegateProperty dpRecognize = new DelegateProperty(
 					Messages.getString("YieldsPanel.Recognize"), candidates); //$NON-NLS-1$
 			ypnlQuestions.add(new PropertyPanel(new PropertySet(dpRecognize),
