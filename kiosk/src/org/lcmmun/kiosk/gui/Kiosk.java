@@ -138,6 +138,7 @@ import org.lcmmun.kiosk.motions.AgendaMotion;
 import org.lcmmun.kiosk.motions.CloseDebateMotion;
 import org.lcmmun.kiosk.motions.DivisionOfTheQuestionMotion;
 import org.lcmmun.kiosk.motions.FormalCaucusMotion;
+import org.lcmmun.kiosk.motions.FriendlyAmendmentMotion;
 import org.lcmmun.kiosk.motions.IntroduceWorkingPaperMotion;
 import org.lcmmun.kiosk.motions.MajorityType;
 import org.lcmmun.kiosk.motions.ModeratedCaucusMotion;
@@ -147,6 +148,7 @@ import org.lcmmun.kiosk.motions.PrecedenceComparator;
 import org.lcmmun.kiosk.motions.RollCallVoteMotion;
 import org.lcmmun.kiosk.motions.SpeakingTimeMotion;
 import org.lcmmun.kiosk.motions.TableDebateMotion;
+import org.lcmmun.kiosk.motions.UnfriendlyAmendmentMotion;
 import org.lcmmun.kiosk.motions.UnmoderatedCaucusMotion;
 import org.lcmmun.kiosk.resources.CreditsMessages;
 import org.lcmmun.kiosk.resources.ImageFetcher;
@@ -1432,6 +1434,61 @@ public class Kiosk extends JFrame {
 						}
 					});
 			mnOtherMotions.add(miIntroduceMotion);
+
+			JMenuItem miFriendlyAmendment = new JMenuItem(new AbstractAction(
+					Messages.getString("Kiosk.MiiOtherIntroduceFriendly")) { //$NON-NLS-1$
+						@Override
+						public void actionPerformed(ActionEvent ae) {
+							proposeMotion(
+									new MotionGenerator<FriendlyAmendmentMotion>() {
+										@Override
+										public FriendlyAmendmentMotion generateMotion() {
+											return new FriendlyAmendmentMotion(
+													getFirstPresentDelegate(),
+													committee.workingPapers.get(committee
+															.getCurrentTopic()));
+										}
+									},
+									new MotionPassedListener<FriendlyAmendmentMotion>() {
+										@Override
+										public void motionPassed(
+												MotionPassedEvent<FriendlyAmendmentMotion> mpe) {
+											JOptionPane.showMessageDialog(
+													Kiosk.this,
+													Messages.getString("Kiosk.FriendlyAmendmentUpdateText")); //$NON-NLS-1$
+										}
+									});
+						}
+					});
+			mnOtherMotions.add(miFriendlyAmendment);
+
+			JMenuItem miUnfriendlyAmendment = new JMenuItem(new AbstractAction(
+					Messages.getString("Kiosk.MiiOtherIntroduceUnfriendly")) { //$NON-NLS-1$
+						@Override
+						public void actionPerformed(ActionEvent ae) {
+							proposeMotion(
+									new MotionGenerator<UnfriendlyAmendmentMotion>() {
+										@Override
+										public UnfriendlyAmendmentMotion generateMotion() {
+											return new UnfriendlyAmendmentMotion(
+													getFirstPresentDelegate(),
+													committee.workingPapers.get(committee
+															.getCurrentTopic()));
+										}
+									},
+									new MotionPassedListener<UnfriendlyAmendmentMotion>() {
+										@Override
+										public void motionPassed(
+												MotionPassedEvent<UnfriendlyAmendmentMotion> mpe) {
+											JOptionPane.showMessageDialog(
+													Kiosk.this,
+													Messages.getString("Kiosk.UnfriendlyAmendmentUpdateText")); //$NON-NLS-1$
+											beginVotingProcess();
+										}
+									});
+						}
+					});
+			mnOtherMotions.add(miUnfriendlyAmendment);
 
 			JMenuItem miAgenda = new JMenuItem(new AbstractAction(
 					Messages.getString("Kiosk.MiiOtherSetAgenda")) { //$NON-NLS-1$
