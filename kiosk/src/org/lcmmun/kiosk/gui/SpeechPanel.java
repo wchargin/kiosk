@@ -224,6 +224,7 @@ public class SpeechPanel extends JPanel {
 	 *            the event to fire
 	 */
 	protected void fireYieldEvent(YieldEvent yieldEvent) {
+		yieldsPanel.fireYieldEvent(yieldEvent);
 		for (YieldListener listener : listenerList
 				.getListeners(YieldListener.class)) {
 			listener.yield(yieldEvent);

@@ -51,7 +51,7 @@ public class PublicDisplayGSLPanel extends JPanel implements
 	/**
 	 * The main progress bar.
 	 */
-	private final RadialImageProgressBar ripbMain;
+	private final RadialImageSpeechPanel ripbMain;
 
 	/**
 	 * The progress bar for the yielded speaker.
@@ -183,7 +183,7 @@ public class PublicDisplayGSLPanel extends JPanel implements
 		super(new MigLayout());
 		this.committee = committee;
 
-		ripbMain = new RadialImageProgressBar();
+		ripbMain = new RadialImageSpeechPanel();
 		add(ripbMain, new CC().grow().push());
 
 		add(pnlYield, new CC().growX().push().alignY("center").hideMode(3)); //$NON-NLS-1$
@@ -315,8 +315,7 @@ public class PublicDisplayGSLPanel extends JPanel implements
 	public void yield(YieldEvent ye) {
 		if (ye.yield.type == null || ye.yield.type == YieldType.CHAIR) {
 			tmSpeech.stop();
-			ripbMain.setImage(null);
-			pnlYield.setVisible(false);
+			ripbMain.stopSpeech();
 			commentNumber = -1;
 			return;
 		}
@@ -354,8 +353,7 @@ public class PublicDisplayGSLPanel extends JPanel implements
 	public void startSpeech(Delegate delegate, Time speakingTime) {
 		speaker = delegate;
 		secondsElapsed = 0;
-		ripbMain.setPercentage(0);
-		ripbMain.setImage(speaker.getImage());
+		ripbMain.startSpeech(delegate, speakingTime);
 		totalTime = speakingTime;
 		yieldedSpeaker = null;
 		tmSpeech.start();
@@ -365,6 +363,7 @@ public class PublicDisplayGSLPanel extends JPanel implements
 	 * Pauses or resumes the current speech.
 	 */
 	public void pauseSpeech() {
+		ripbMain.pauseSpeech();
 		if (tmSpeech.isRunning()) {
 			tmSpeech.stop();
 		} else {

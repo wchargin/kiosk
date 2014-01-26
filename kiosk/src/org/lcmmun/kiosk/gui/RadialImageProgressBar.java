@@ -1,7 +1,9 @@
 package org.lcmmun.kiosk.gui;
 
 import java.awt.AlphaComposite;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -10,6 +12,8 @@ import java.awt.Transparency;
 import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -36,10 +40,69 @@ public class RadialImageProgressBar extends JPanel {
 	private double percentage;
 
 	/**
+	 * The text to show below the image.
+	 */
+	private JLabel label;
+
+	/**
 	 * Creates the progress bar with a {@code null} image.
 	 */
 	public RadialImageProgressBar() {
-		setPreferredSize(new Dimension(256, 256));
+		super(new BorderLayout());
+
+		add(new JComponent() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			{
+				setPreferredSize(new Dimension(256, 256));
+			}
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				if (image == null) {
+					return;
+				}
+
+				final BufferedImage tempImage = ((Graphics2D) g)
+						.getDeviceConfiguration().createCompatibleImage(
+								getWidth(), getHeight(),
+								Transparency.TRANSLUCENT);
+				Graphics2D g2d = (Graphics2D) tempImage.getGraphics();
+
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+						RenderingHints.VALUE_ANTIALIAS_ON);
+
+				final int smaller = getWidth() < getHeight() ? getWidth()
+						: getHeight();
+				final int w = smaller > image.getWidth(null) ? image.getWidth(null)
+						: smaller;
+				final int h = smaller > image.getHeight(null) ? image.getHeight(null)
+						: smaller;
+				final int x = (getWidth() - w) / 2;
+				final int y = (getHeight() - h) / 2;
+
+				g2d.setComposite(AlphaComposite.Clear);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+				Arc2D a2d = new Arc2D.Double(x, y, w, h, 90,
+						360d - (percentage * 360d), Arc2D.PIE);
+				g2d.setComposite(AlphaComposite.Src);
+				g2d.fill(a2d);
+				g2d.setComposite(AlphaComposite.SrcIn);
+				g2d.drawImage(image, x, y, w, h, null);
+
+				g.drawImage(tempImage, 0, 0, null);
+			}
+		}, BorderLayout.CENTER);
+
+		label = new JLabel();
+		label.setFont(label.getFont().deriveFont(24f).deriveFont(Font.BOLD));
+		label.setHorizontalAlignment(JLabel.CENTER);
+		setText(null);
+		add(label, BorderLayout.SOUTH);
 	}
 
 	/**
@@ -62,37 +125,7 @@ public class RadialImageProgressBar extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		if (image == null) {
-			return;
-		}
 
-		final BufferedImage tempImage = ((Graphics2D) g)
-				.getDeviceConfiguration().createCompatibleImage(getWidth(),
-						getHeight(), Transparency.TRANSLUCENT);
-		Graphics2D g2d = (Graphics2D) tempImage.getGraphics();
-
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-
-		final int smaller = getWidth() < getHeight() ? getWidth() : getHeight();
-		final int w = smaller > image.getWidth(null) ? image.getWidth(null)
-				: smaller;
-		final int h = smaller > image.getHeight(null) ? image.getHeight(null)
-				: smaller;
-		final int x = (getWidth() - w) / 2;
-		final int y = (getHeight() - h) / 2;
-
-		g2d.setComposite(AlphaComposite.Clear);
-		g2d.fillRect(0, 0, getWidth(), getHeight());
-		Arc2D a2d = new Arc2D.Double(x, y, w, h, 90,
-				360d - (percentage * 360d), Arc2D.PIE);
-		g2d.setComposite(AlphaComposite.Src);
-		g2d.fill(a2d);
-		g2d.setComposite(AlphaComposite.SrcIn);
-		g2d.drawImage(image, x, y, w, h, null);
-
-		g.drawImage(tempImage, 0, 0, null);
 	}
 
 	/**
@@ -115,5 +148,16 @@ public class RadialImageProgressBar extends JPanel {
 	public void setPercentage(double percentage) {
 		this.percentage = percentage;
 		repaint();
+	}
+
+	/**
+	 * Sets the text displayed on this progress bar.
+	 * 
+	 * @param string
+	 *            the new text; {@code null} clears
+	 */
+	public void setText(String string) {
+		label.setText(string == null || string.isEmpty() ? String.valueOf(' ')
+				: string);
 	}
 }

@@ -39,8 +39,7 @@ public class RadialImageSpeechPanel extends RadialImageProgressBar {
 	private final Timer timer = new Timer(1000, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
-			setPercentage((double) (++secondsElapsed)
-					/ (double) (totalSeconds));
+			setPercentage((double) (++secondsElapsed) / (double) (totalSeconds));
 			if (secondsElapsed == totalSeconds) {
 				setImage(null);
 			}
@@ -89,6 +88,7 @@ public class RadialImageSpeechPanel extends RadialImageProgressBar {
 		this.secondsElapsed = 0;
 		this.totalSeconds = speakingTime.getTotalSeconds();
 		setImage(delegate.getImage());
+		setText(delegate.getName());
 		setPercentage(0);
 		timer.start();
 	}
@@ -100,6 +100,7 @@ public class RadialImageSpeechPanel extends RadialImageProgressBar {
 		timer.stop();
 		secondsElapsed = totalSeconds = 0;
 		setImage(null);
+		setText(null);
 	}
 
 	/**
