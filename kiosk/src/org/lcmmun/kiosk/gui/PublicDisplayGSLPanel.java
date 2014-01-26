@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.Box;
@@ -13,7 +11,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import net.miginfocom.layout.CC;
 import net.miginfocom.swing.MigLayout;
@@ -51,27 +48,12 @@ public class PublicDisplayGSLPanel extends JPanel implements
 	/**
 	 * The main progress bar.
 	 */
-	private final RadialImageSpeechPanel ripbMain;
+	private final RadialImageSpeechPanel rispMain;
 
 	/**
 	 * The progress bar for the yielded speaker.
 	 */
-	private final RadialImageProgressBar ripbYielded;
-
-	/**
-	 * The speech timer.
-	 */
-	private final Timer tmSpeech = new Timer(1000, new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent ae) {
-			(yieldedSpeaker == null ? ripbMain : ripbYielded)
-					.setPercentage((double) (++secondsElapsed)
-							/ (double) (totalTime.getTotalSeconds()));
-			if (secondsElapsed >= totalTime.getTotalSeconds()) {
-				tmSpeech.stop();
-			}
-		}
-	});
+	private final RadialImageSpeechPanel rispYielded;
 
 	/**
 	 * The current speaker.
@@ -82,17 +64,6 @@ public class PublicDisplayGSLPanel extends JPanel implements
 	 * The delegate to whom time was yielded.
 	 */
 	private Delegate yieldedSpeaker;
-
-	/**
-	 * The number of seconds elapsed in the current speech, or {@code -1} if no
-	 * speech is ongoing.
-	 */
-	private int secondsElapsed;
-
-	/**
-	 * The total speaking time.
-	 */
-	private Time totalTime;
 
 	/**
 	 * The card layout for the yield panel.
@@ -183,8 +154,8 @@ public class PublicDisplayGSLPanel extends JPanel implements
 		super(new MigLayout());
 		this.committee = committee;
 
-		ripbMain = new RadialImageSpeechPanel();
-		add(ripbMain, new CC().grow().push());
+		rispMain = new RadialImageSpeechPanel();
+		add(rispMain, new CC().grow().push());
 
 		add(pnlYield, new CC().growX().push().alignY("center").hideMode(3)); //$NON-NLS-1$
 		pnlYield.setVisible(false);
@@ -230,8 +201,8 @@ public class PublicDisplayGSLPanel extends JPanel implements
 		updateQuestionsPanel();
 
 		ypnlDelegate = new JPanel(new BorderLayout());
-		ripbYielded = new RadialImageProgressBar();
-		ypnlDelegate.add(ripbYielded, BorderLayout.CENTER);
+		rispYielded = new RadialImageSpeechPanel();
+		ypnlDelegate.add(rispYielded, BorderLayout.CENTER);
 		pnlYield.add(ypnlDelegate, YieldType.DELEGATE.name());
 		updateDelegatePanel();
 	}
@@ -263,11 +234,6 @@ public class PublicDisplayGSLPanel extends JPanel implements
 	 * Updates the delegate yield panel.
 	 */
 	private void updateDelegatePanel() {
-		if (yieldedSpeaker != null) {
-			ripbYielded.setImage(yieldedSpeaker.getImage());
-			ripbYielded.setPercentage((double) (secondsElapsed)
-					/ (double) (totalTime.getTotalSeconds()));
-		}
 	}
 
 	/**
@@ -314,8 +280,8 @@ public class PublicDisplayGSLPanel extends JPanel implements
 	@Override
 	public void yield(YieldEvent ye) {
 		if (ye.yield.type == null || ye.yield.type == YieldType.CHAIR) {
-			tmSpeech.stop();
-			ripbMain.stopSpeech();
+			rispMain.stopSpeech();
+			rispYielded.stopSpeech();
 			commentNumber = -1;
 			return;
 		}
@@ -326,7 +292,6 @@ public class PublicDisplayGSLPanel extends JPanel implements
 			break;
 		case COMMENTS:
 			commentNumber = 0;
-			tmSpeech.stop();
 			tbComment.stop();
 			updateCommentsPanel();
 			break;
@@ -335,6 +300,11 @@ public class PublicDisplayGSLPanel extends JPanel implements
 			break;
 		case DELEGATE:
 			yieldedSpeaker = ye.yield.target;
+			rispMain.pauseSpeech();
+			rispYielded.startSpeech(
+					ye.yield.target,
+					Time.fromSeconds(rispMain.getTotalSeconds()
+							- rispMain.getSecondsElapsed()));
 			updateDelegatePanel();
 			break;
 		}
@@ -352,22 +322,18 @@ public class PublicDisplayGSLPanel extends JPanel implements
 	 */
 	public void startSpeech(Delegate delegate, Time speakingTime) {
 		speaker = delegate;
-		secondsElapsed = 0;
-		ripbMain.startSpeech(delegate, speakingTime);
-		totalTime = speakingTime;
+		rispMain.startSpeech(delegate, speakingTime);
 		yieldedSpeaker = null;
-		tmSpeech.start();
 	}
 
 	/**
 	 * Pauses or resumes the current speech.
 	 */
 	public void pauseSpeech() {
-		ripbMain.pauseSpeech();
-		if (tmSpeech.isRunning()) {
-			tmSpeech.stop();
+		if (yieldedSpeaker == null) {
+			rispMain.pauseSpeech();
 		} else {
-			tmSpeech.start();
+			rispYielded.pauseSpeech();
 		}
 	}
 
@@ -375,15 +341,10 @@ public class PublicDisplayGSLPanel extends JPanel implements
 	public void speechActionPerformed(SpeechEvent se) {
 		switch (se.type) {
 		case PAUSED: // or resumed
-			if (tmSpeech.isRunning()) {
-				tmSpeech.stop();
-			} else {
-				tmSpeech.start();
-			}
+			pauseSpeech();
 			break;
 		case FINISHED:
-			tmSpeech.stop();
-			ripbMain.setImage(null);
+			rispMain.stopSpeech();
 			pnlYield.setVisible(false);
 			commentNumber = -1;
 			break;
