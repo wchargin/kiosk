@@ -3,6 +3,8 @@ package org.lcmmun.kiosk.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -105,6 +107,18 @@ public class SpeakersListPanel extends JPanel {
 		dpDelegate = new DelegateProperty(null, comboModel);
 
 		speakersList = new DelegateSelectionPanel(model, false);
+		speakersList.list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseExited(MouseEvent e) {
+				speakersList.list.clearSelection();
+			}
+		});
+		speakersList.list.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				speakersList.list.clearSelection();
+			}
+		});
 
 		if (delegates != null) {
 			updateDelegates(delegates);
@@ -216,9 +230,10 @@ public class SpeakersListPanel extends JPanel {
 					final Delegate at = speakersList.listModel
 							.getElementAt(index);
 					JPopupMenu popup = new JPopupMenu();
-					popup.add(new AbstractAction(String.format(
-							Messages.getString("SpeakersListPanel.PmiRecognizeDelegate"), at.getName(), index + 1), at //$NON-NLS-1$
-							.getSmallIcon()) {
+					popup.add(new AbstractAction(
+							String.format(
+									Messages.getString("SpeakersListPanel.PmiRecognizeDelegate"), at.getName(), index + 1), at //$NON-NLS-1$
+									.getSmallIcon()) {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							startSpeech(at);
@@ -230,15 +245,17 @@ public class SpeakersListPanel extends JPanel {
 							.getSize() - 1;
 
 					popup.add(new JSeparator());
-					popup.add(new AbstractAction(Messages.getString("SpeakersListPanel.PmiRemove"), ImageFetcher //$NON-NLS-1$
-							.fetchImageIcon(ImageType.DELETE)) {
+					popup.add(new AbstractAction(
+							Messages.getString("SpeakersListPanel.PmiRemove"), ImageFetcher //$NON-NLS-1$
+									.fetchImageIcon(ImageType.DELETE)) {
 						@Override
 						public void actionPerformed(ActionEvent ae) {
 							removeFromSpeakersList(at);
 						}
 					});
-					popup.add(new AbstractAction(Messages.getString("SpeakersListPanel.PmiMoveToTop"), ImageFetcher //$NON-NLS-1$
-							.fetchImageIcon(ImageType.UP_STRONG)) {
+					popup.add(new AbstractAction(
+							Messages.getString("SpeakersListPanel.PmiMoveToTop"), ImageFetcher //$NON-NLS-1$
+									.fetchImageIcon(ImageType.UP_STRONG)) {
 						{
 							setEnabled(canMoveUp);
 						}
@@ -250,8 +267,9 @@ public class SpeakersListPanel extends JPanel {
 							}
 						}
 					});
-					popup.add(new AbstractAction(Messages.getString("SpeakersListPanel.PmiMoveUp"), ImageFetcher //$NON-NLS-1$
-							.fetchImageIcon(ImageType.UP)) {
+					popup.add(new AbstractAction(
+							Messages.getString("SpeakersListPanel.PmiMoveUp"), ImageFetcher //$NON-NLS-1$
+									.fetchImageIcon(ImageType.UP)) {
 						{
 							setEnabled(canMoveUp);
 						}
@@ -261,8 +279,9 @@ public class SpeakersListPanel extends JPanel {
 							speakersList.listModel.moveUp(index);
 						}
 					});
-					popup.add(new AbstractAction(Messages.getString("SpeakersListPanel.PmiMoveDown"), ImageFetcher //$NON-NLS-1$
-							.fetchImageIcon(ImageType.DOWN)) {
+					popup.add(new AbstractAction(
+							Messages.getString("SpeakersListPanel.PmiMoveDown"), ImageFetcher //$NON-NLS-1$
+									.fetchImageIcon(ImageType.DOWN)) {
 						{
 							setEnabled(canMoveDown);
 						}
@@ -272,8 +291,9 @@ public class SpeakersListPanel extends JPanel {
 							speakersList.listModel.moveDown(index);
 						}
 					});
-					popup.add(new AbstractAction(Messages.getString("SpeakersListPanel.PmiMoveToBottom"), ImageFetcher //$NON-NLS-1$
-							.fetchImageIcon(ImageType.DOWN_STRONG)) {
+					popup.add(new AbstractAction(
+							Messages.getString("SpeakersListPanel.PmiMoveToBottom"), ImageFetcher //$NON-NLS-1$
+									.fetchImageIcon(ImageType.DOWN_STRONG)) {
 						{
 							setEnabled(canMoveDown);
 						}
