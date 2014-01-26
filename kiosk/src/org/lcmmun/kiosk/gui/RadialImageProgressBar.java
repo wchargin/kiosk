@@ -1,7 +1,6 @@
 package org.lcmmun.kiosk.gui;
 
 import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -12,9 +11,14 @@ import java.awt.Transparency;
 import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 
+import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import net.miginfocom.layout.CC;
+import net.miginfocom.layout.LC;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * A component that displays progress using a clipmask of an image.
@@ -48,7 +52,9 @@ public class RadialImageProgressBar extends JPanel {
 	 * Creates the progress bar with a {@code null} image.
 	 */
 	public RadialImageProgressBar() {
-		super(new BorderLayout());
+		super(new MigLayout(new LC().flowY()));
+
+		add(Box.createVerticalGlue(), new CC().growY().pushY());
 
 		add(new JComponent() {
 			/**
@@ -96,13 +102,15 @@ public class RadialImageProgressBar extends JPanel {
 
 				g.drawImage(tempImage, 0, 0, null);
 			}
-		}, BorderLayout.CENTER);
+		}, new CC().grow().pushX());
 
 		label = new JLabel();
 		label.setFont(label.getFont().deriveFont(24f).deriveFont(Font.BOLD));
 		label.setHorizontalAlignment(JLabel.CENTER);
 		setText(null);
-		add(label, BorderLayout.SOUTH);
+		add(label, new CC().grow().pushX());
+
+		add(Box.createVerticalGlue(), new CC().growY().pushY());
 	}
 
 	/**
