@@ -83,15 +83,26 @@ public class DelegateModel extends AbstractListModel implements ComboBoxModel {
 	}
 
 	/**
-	 * Adds the given delegate to the list.
+	 * Adds the given delegate to the end of the list.
 	 * 
 	 * @param d
 	 *            the delegate to add
 	 */
 	public void add(Delegate d) {
-		list.add(d);
+		add(list.size(), d);
+	}
+
+	/**
+	 * Adds the given delegate to the list.
+	 * 
+	 * @param index
+	 *            the position at which to add the delegate
+	 * @param d
+	 *            the delegate to add
+	 */
+	public void add(int index, Delegate d) {
+		list.add(index, d);
 		d.addPropertyChangeListener(Delegate.PROP_NAME, nameListener);
-		int index = list.indexOf(d);
 		fireIntervalAdded(this, index, index);
 		alphabetizeIfNecessary();
 	}

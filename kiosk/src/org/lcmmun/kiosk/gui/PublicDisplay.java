@@ -28,6 +28,8 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
@@ -282,6 +284,11 @@ public class PublicDisplay extends JFrame implements YieldListener,
 	 * The card layout for the {@linkplain #pnlDebate debate panel}.
 	 */
 	private final CardLayout clDebate = new CardLayout();
+
+	/**
+	 * The {@code ListDataListener} used to update the "next speaker" label.
+	 */
+	private final ListDataListener ldlNextSpeakerUpdate;
 
 	/**
 	 * The main debate panel, showing either the speakers' list or current
@@ -551,8 +558,50 @@ public class PublicDisplay extends JFrame implements YieldListener,
 
 		JPanel pnlSpeakersList = new JPanel(new MigLayout());
 		pnlGeneralSpeakersList.add(pnlSpeakersList);
+
 		pnlSpeakersList
 				.add(createTitleLabel(Messages.getString("PublicDisplay.GSL")), ccTitle); //$NON-NLS-1$
+
+		JPanel pnlNextSpeaker = new JPanel(new MigLayout());
+		JLabel lblNextText = new JLabel(Messages.getString("PublicDisplay.NextSpeakerLabel")); //$NON-NLS-1$
+		lblNextText.setFont(lblNextText.getFont().deriveFont(18f));
+		lblNextText.setHorizontalAlignment(JLabel.TRAILING);
+		pnlNextSpeaker.add(lblNextText, new CC());
+		final JLabel lblNextValue = new JLabel();
+		lblNextValue.setFont(lblNextValue.getFont().deriveFont(Font.BOLD)
+				.deriveFont(18f));
+		pnlNextSpeaker.add(lblNextValue, new CC().growX().pushX());
+		pnlSpeakersList.add(pnlNextSpeaker, new CC().growX().pushX().wrap());
+
+		ldlNextSpeakerUpdate = new ListDataListener() {
+			{
+				// initial trigger
+				contentsChanged(null);
+			}
+
+			@Override
+			public void intervalRemoved(ListDataEvent e) {
+				contentsChanged(e);
+			}
+
+			@Override
+			public void intervalAdded(ListDataEvent e) {
+				contentsChanged(e);
+			}
+
+			@Override
+			public void contentsChanged(ListDataEvent e) {
+				if (speakersModel.getSize() == 0) {
+					lblNextValue.setText(Messages.getString("PublicDisplay.NextSpeakerNoneText")); //$NON-NLS-1$
+					lblNextValue.setIcon(null);
+				} else {
+					Delegate d = speakersModel.getElementAt(0);
+					lblNextValue.setText(d.getName());
+					lblNextValue.setIcon(d.getSmallIcon());
+				}
+			}
+		};
+		speakersModel.addListDataListener(ldlNextSpeakerUpdate);
 		pnlSpeakersList.add(scpnSpeakersList, new CC().grow().pushY().wrap());
 		// pnlSpeakersList.add(ripbSpeakersListProgress, new
 		// CC().grow().pushX());
@@ -563,7 +612,8 @@ public class PublicDisplay extends JFrame implements YieldListener,
 		pnlMotionsOnFloor.add(createTitleLabel(Messages
 				.getString("PublicDisplay.MotionsOnFloor")), ccTitle); //$NON-NLS-1$
 		pnlMotionsOnFloor.add(scpnMotionList, new CC().grow().pushY().wrap());
-		pnlMotionsOnFloor.add(pnlMotionSpeech, new CC().grow().push().hideMode(3));
+		pnlMotionsOnFloor.add(pnlMotionSpeech,
+				new CC().grow().push().hideMode(3));
 		pnlMotionSpeech.setVisible(false);
 
 		JPanel pnlModeratedCaucus = new JPanel(new MigLayout());
@@ -764,7 +814,13 @@ public class PublicDisplay extends JFrame implements YieldListener,
 	 *            the model
 	 */
 	public void setSpeakersModel(DelegateModel model) {
+		if (speakersModel != null) {
+			speakersModel.removeListDataListener(ldlNextSpeakerUpdate);
+		}
 		speakersModel = model;
+		if (speakersModel != null) {
+			speakersModel.addListDataListener(ldlNextSpeakerUpdate);
+		}
 		lstSpeakers.setModel(this.speakersModel);
 	}
 

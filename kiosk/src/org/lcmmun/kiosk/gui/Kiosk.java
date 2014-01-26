@@ -589,6 +589,11 @@ public class Kiosk extends JFrame {
 	private final JButton btnProcess;
 
 	/**
+	 * The last time this committee was saved.
+	 */
+	private Date lastSave = new Date();
+
+	/**
 	 * Whether autosave is enabled.
 	 */
 	private boolean autosaveEnabled;
@@ -1947,7 +1952,8 @@ public class Kiosk extends JFrame {
 			speechPanel.addSpeechListener(new SpeechListener() {
 				@Override
 				public void speechActionPerformed(SpeechEvent se) {
-					if (se.type == SpeechEventType.FINISHED) {
+					switch (se.type) {
+					case FINISHED:
 						speechPanel.yield(new Yield(YieldType.CHAIR));
 						Delegate firstSpeaker = speakersListPanel
 								.getFirstSpeaker();
@@ -1955,6 +1961,12 @@ public class Kiosk extends JFrame {
 							pushDatum(DatumFactory
 									.createNextSpeakerDatum(firstSpeaker));
 						}
+						break;
+					case CANCELED:
+						speakersListPanel.getModel().add(0, se.speaker);
+						return;
+					default:
+						break; // don't care at the moment
 					}
 				}
 			});
@@ -3423,10 +3435,16 @@ public class Kiosk extends JFrame {
 	 * elect to save and quit, quit without saving, or not quit at all.
 	 */
 	private void performExit() {
+		// from http://stackoverflow.com/a/6352151/732016
+		long timeDiff = new Date().getTime() - lastSave.getTime();
+		Time duration = Time.fromSeconds((int) (timeDiff / 1000));
+		String durtxt = duration.toString(); // ///////////////////
+
 		int ret = JOptionPane
 				.showConfirmDialog(
 						this,
-						Messages.getString("Kiosk.SaveChangesPrompt"), //$NON-NLS-1$
+						String.format(
+								Messages.getString("Kiosk.SaveChangesPrompt"), durtxt), //$NON-NLS-1$
 						Messages.getString("Kiosk.SaveChangesTitle"), JOptionPane.YES_NO_CANCEL_OPTION, //$NON-NLS-1$
 						JOptionPane.WARNING_MESSAGE);
 		switch (ret) {
@@ -3853,6 +3871,7 @@ public class Kiosk extends JFrame {
 		// file path for easy access next time.
 		if (!failed) {
 			saveLocationToPreferences(file);
+			lastSave = new Date();
 		}
 		return !failed;
 	}
