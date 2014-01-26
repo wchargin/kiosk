@@ -74,8 +74,6 @@ public class MultiWPREditor extends JPanel {
 	public MultiWPREditor(final Collection<WorkingPaper> papers,
 			Committee committee) {
 		super(new BorderLayout());
-		System.out.println(papers == committee.workingPapers.get(committee
-				.getCurrentTopic()));
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		add(splitPane, BorderLayout.CENTER);
