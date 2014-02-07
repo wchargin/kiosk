@@ -460,7 +460,13 @@ public class Kiosk extends JFrame {
 			x = 6;
 			splashGraphics.drawString(message, x, y);
 		}
-		splash.update();
+		try {
+			splash.update();
+		} catch (IllegalStateException ise) {
+			// survey popup or something else
+			// this is just supplemental information anyway, so ignore
+			return;
+		}
 	}
 
 	/**
